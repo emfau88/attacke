@@ -11,7 +11,7 @@ public class Phase1Config : ScriptableObject
     public int criticalThreshold = 19;
     public int warningThreshold = 45;
 
-    public float uiLerpSpeed = 6.5f;
+    public float uiLerpSpeed = 7f;
     public float cooldownSeconds = 1.8f;
     public float questTargetSeconds = 28f;
     public int questMoodThreshold = 58;
