@@ -37,15 +37,23 @@ Plain unidiff content applied via:
 - `13` patch apply failed
 
 ## Resume behavior
-`run.sh` reads `state.json.next_ticket` and starts from that ticket.
+`run.sh` resumes from `state.json.next_ticket`.
+If state is `DONE`, it inspects the latest run TSV and resumes from the next non-successful (or missing) ticket.
+
+## Heartbeat / crash visibility
+- `reports/heartbeat.log` is updated every 60s with ticket/phase/commit/clean-state.
+- Dirty-start recovery snapshots text files into `reports/dirty_snapshot_<timestamp>/` before reset.
 
 ## Failure handling
 If apply/gates fail, runner:
 1. rolls back to checkpoint (`git reset --hard` + `git clean -fd -e reports/`),
-2. logs failure row to report TSV,
+2. logs failure row (including gate status/detail + revert marker),
 3. continues with next ticket.
 
 ## Reports
-Outputs:
+Outputs per run:
 - `reports/run_<timestamp>.json`
 - `reports/run_<timestamp>.md`
+- `reports/chat_summary_<timestamp>.txt`
+
+At run end, `run.sh` prints the full chat summary so a human-readable completion block is always emitted.
