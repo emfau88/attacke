@@ -1,0 +1,19 @@
+* text=auto
+
+*.cs text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+
+*.sln text eol=crlf
+*.csproj text eol=crlf
+
+*.png -text
+*.jpg -text
+*.jpeg -text
+*.psd -text
+*.fbx -text
+*.zip -text
+*.dll -text
+*.exe -text
