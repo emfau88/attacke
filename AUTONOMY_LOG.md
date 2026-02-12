@@ -103,3 +103,4 @@
 - Applied stabilization action: normalized log format and captured final run summary references under /tmp/attacke_zip2/*.log.
 - 2026-02-12T16:29:46Z [T002] DONE: rerun executed from zip and artifact written to Docs/TicketRerun/T002.md.
 - 2026-02-12T16:29:49Z [T003] DONE: rerun executed from zip and artifact written to Docs/TicketRerun/T003.md.
+- 2026-02-12T16:29:52Z [T004] DONE: rerun executed from zip and artifact written to Docs/TicketRerun/T004.md.
