@@ -1,0 +1,22 @@
+{
+  "run_id": "20260212T165011Z",
+  "generated_at": "2026-02-12T16:50:48Z",
+  "tickets": [
+    {
+      "ticket": "T001",
+      "status": "success",
+      "checkpoint": "b2812c0",
+      "commit": "b339f04",
+      "gate_code": "0",
+      "error": "-"
+    }    ,
+    {
+      "ticket": "T002",
+      "status": "success",
+      "checkpoint": "b339f04",
+      "commit": "61d91b9",
+      "gate_code": "0",
+      "error": "-"
+    }
+  ]
+}

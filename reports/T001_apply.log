@@ -1,1 +1,5 @@
-[apply_ticket] not implemented for tickets/T001.md
+[apply_ticket] ACTIONS start
+[apply_ticket] MKDIR docs
+[apply_ticket] WRITE docs/test.txt
+[apply_ticket] ACTIONS done
+[apply_ticket] success: T001.md
