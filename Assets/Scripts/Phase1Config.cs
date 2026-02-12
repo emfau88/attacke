@@ -13,7 +13,7 @@ public class Phase1Config : ScriptableObject
 
     public float uiLerpSpeed = 7f;
     public float cooldownSeconds = 1.5f;
-    public float questTargetSeconds = 28f;
+    public float questTargetSeconds = 24f;
     public int questMoodThreshold = 58;
 
     public static Phase1Config CreateRuntimeDefaults()
