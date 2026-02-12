@@ -105,7 +105,7 @@ public class PetController : MonoBehaviour
 
         if (questText != null)
         {
-            questText.text = $"Quest: Keep Mood > {cfg.questMoodThreshold} for {cfg.questTargetSeconds:0}s ({questProgress:0.0}s)";
+            questText.text = $"Mini-Quest: Mood > {cfg.questMoodThreshold} for {cfg.questTargetSeconds:0}s ({questProgress:0.0}s)";
         }
     }
 
