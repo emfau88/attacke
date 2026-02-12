@@ -211,9 +211,9 @@ public class PetController : MonoBehaviour
         hungerBar.value = displayedHunger;
         moodBar.value = displayedMood;
         energyBar.value = displayedEnergy;
-        hungerText.text = $"Hunger {state.Hunger}/100";
-        moodText.text = $"Mood {state.Mood}/100";
-        energyText.text = $"Energy {state.Energy}/100";
+        hungerText.text = $"{state.Hunger}%";
+        moodText.text = $"{state.Mood}%";
+        energyText.text = $"{state.Energy}%";
     }
 
     private void Revive()
@@ -270,90 +270,136 @@ public class PetController : MonoBehaviour
         var ort = overlay.GetComponent<RectTransform>();
         ort.anchorMin = Vector2.zero; ort.anchorMax = Vector2.one; ort.offsetMin = Vector2.zero; ort.offsetMax = Vector2.zero;
 
-        var root = new GameObject("Phase1UI", typeof(RectTransform), typeof(VerticalLayoutGroup));
+        var root = new GameObject("Phase1UI", typeof(RectTransform));
         root.transform.SetParent(canvas.transform, false);
         uiRoot = root.GetComponent<RectTransform>();
-        uiRoot.anchorMin = new Vector2(0.5f, 0.5f); uiRoot.anchorMax = new Vector2(0.5f, 0.5f); uiRoot.sizeDelta = new Vector2(840, 1480);
-        var layout = root.GetComponent<VerticalLayoutGroup>();
-        layout.spacing = 14; layout.padding = new RectOffset(16,16,16,16); layout.childAlignment = TextAnchor.UpperCenter;
+        uiRoot.anchorMin = Vector2.zero; uiRoot.anchorMax = Vector2.one; uiRoot.offsetMin = Vector2.zero; uiRoot.offsetMax = Vector2.zero;
 
-        CreateText(root.transform, font, "Bulldog Core Loop", 46);
-        dogStateText = CreateText(root.transform, font, "State: Idle", 30);
+        var title = CreateText(root.transform, font, "Bulldog Buddy", 48, TextAnchor.MiddleCenter, Color.white);
+        Anchor(title.rectTransform, 0.5f, 1f, 0.5f, 1f, new Vector2(0, -54), new Vector2(760, 64));
+
+        CreateStatusBar(root.transform, font, "Hunger", new Color(1f, 0.63f, 0.2f), out hungerBar, out hungerText, 1f, -170f, 51);
+        CreateStatusBar(root.transform, font, "Mood", new Color(0.3f, 0.76f, 1f), out moodBar, out moodText, 1f, -300f, 75);
+        CreateStatusBar(root.transform, font, "Energy", new Color(0.45f, 0.88f, 0.38f), out energyBar, out energyText, 1f, -430f, 73);
+
+        var questPanel = new GameObject("QuestPanel", typeof(RectTransform), typeof(Image));
+        questPanel.transform.SetParent(root.transform, false);
+        var qp = questPanel.GetComponent<Image>();
+        qp.color = new Color(0.22f, 0.24f, 0.38f, 0.95f);
+        Anchor(questPanel.GetComponent<RectTransform>(), 0.5f, 1f, 0.5f, 1f, new Vector2(0, -580), new Vector2(820, 140));
+
+        questText = CreateText(questPanel.transform, font, "Quest", 36, TextAnchor.MiddleCenter, Color.white);
+        Anchor(questText.rectTransform, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, 0), new Vector2(780, 110));
 
         var dog = new GameObject("Dog", typeof(RectTransform), typeof(Image));
         dog.transform.SetParent(root.transform, false);
-        var dr = dog.GetComponent<RectTransform>(); dr.sizeDelta = new Vector2(360, 360);
-        dogImage = dog.GetComponent<Image>(); dogImage.color = new Color(0.85f,0.75f,0.6f);
+        var dr = dog.GetComponent<RectTransform>();
+        Anchor(dr, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -80), new Vector2(440, 440));
+        dogImage = dog.GetComponent<Image>();
+        dogImage.color = new Color(0.85f, 0.75f, 0.6f);
 
-        hungerBar = CreateBar(root.transform, new Color(1f, 0.6f, 0.2f));
-        hungerText = CreateText(root.transform, font, "Hunger", 28);
-        moodBar = CreateBar(root.transform, new Color(0.35f, 0.65f, 1f));
-        moodText = CreateText(root.transform, font, "Mood", 28);
-        energyBar = CreateBar(root.transform, new Color(0.35f, 0.85f, 0.4f));
-        energyText = CreateText(root.transform, font, "Energy", 28);
+        dogStateText = CreateText(root.transform, font, "State: Idle", 34, TextAnchor.MiddleCenter, Color.white);
+        Anchor(dogStateText.rectTransform, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -330), new Vector2(860, 56));
 
-        var buttonRow = new GameObject("Buttons", typeof(RectTransform), typeof(HorizontalLayoutGroup));
-        buttonRow.transform.SetParent(root.transform, false);
-        var h = buttonRow.GetComponent<HorizontalLayoutGroup>(); h.spacing = 12; h.childAlignment = TextAnchor.MiddleCenter;
+        saveText = CreateText(root.transform, font, "", 34, TextAnchor.MiddleCenter, new Color(0.9f, 1f, 0.95f));
+        Anchor(saveText.rectTransform, 0.79f, 0.28f, 0.79f, 0.28f, Vector2.zero, new Vector2(260, 70));
 
-        feedBtn = CreateButton(buttonRow.transform, font, "Feed", Feed);
-        playBtn = CreateButton(buttonRow.transform, font, "Play", Play);
-        sleepBtn = CreateButton(buttonRow.transform, font, "Sleep", Sleep);
+        feedBtn = CreateActionButton(root.transform, font, "Feed", "🍖", new Color(0.31f, 0.84f, 0.49f), new Vector2(-300, -760), Feed);
+        playBtn = CreateActionButton(root.transform, font, "Play", "🔴", new Color(1f, 0.66f, 0.23f), new Vector2(0, -760), Play);
+        sleepBtn = CreateActionButton(root.transform, font, "Sleep", "🌙", new Color(0.39f, 0.56f, 1f), new Vector2(300, -760), Sleep);
 
-        cooldownText = CreateText(root.transform, font, "", 24);
-        tickText = CreateText(root.transform, font, "", 24);
-        questText = CreateText(root.transform, font, "Quest", 24);
-        saveText = CreateText(root.transform, font, "", 22);
+        cooldownText = CreateText(root.transform, font, "", 30, TextAnchor.MiddleCenter, new Color(0.95f, 0.95f, 1f));
+        Anchor(cooldownText.rectTransform, 0.5f, 0f, 0.5f, 0f, new Vector2(0, 170), new Vector2(740, 50));
+        tickText = CreateText(root.transform, font, "", 26, TextAnchor.MiddleCenter, new Color(0.95f, 0.95f, 1f));
+        Anchor(tickText.rectTransform, 0.5f, 0f, 0.5f, 0f, new Vector2(0, 126), new Vector2(740, 44));
 
-        reviveBtn = CreateButton(root.transform, font, "Revive", Revive);
+        reviveBtn = CreateActionButton(root.transform, font, "Revive", "↺", new Color(0.75f, 0.24f, 0.24f), new Vector2(0, -620), Revive);
         reviveBtn.gameObject.SetActive(false);
 
 #if UNITY_EDITOR
-        debugResetBtn = CreateButton(root.transform, font, "Dev Reset", DevReset);
+        debugResetBtn = CreateActionButton(root.transform, font, "Reset", "⚙", new Color(0.35f, 0.35f, 0.35f), new Vector2(0, -900), DevReset);
 #endif
     }
 
-    private static Text CreateText(Transform parent, Font font, string text, int size)
+    private static void CreateStatusBar(Transform parent, Font font, string label, Color fillColor, out Slider slider, out Text valueText, float anchorX, float y, int seedValue)
+    {
+        var bar = new GameObject($"{label}Bar", typeof(RectTransform), typeof(Image));
+        bar.transform.SetParent(parent, false);
+        var barBg = bar.GetComponent<Image>();
+        barBg.color = new Color(0.13f, 0.16f, 0.3f, 0.95f);
+        Anchor(bar.GetComponent<RectTransform>(), anchorX, 1f, anchorX, 1f, new Vector2(0, y), new Vector2(940, 110));
+
+        var fillRoot = new GameObject("Fill", typeof(RectTransform), typeof(Image));
+        fillRoot.transform.SetParent(bar.transform, false);
+        var fillImg = fillRoot.GetComponent<Image>();
+        fillImg.color = fillColor;
+        Anchor(fillRoot.GetComponent<RectTransform>(), 0f, 0f, 0f, 0f, new Vector2(12, 12), new Vector2(620, 86));
+
+        var sliderGo = new GameObject("Slider", typeof(RectTransform), typeof(Slider));
+        sliderGo.transform.SetParent(bar.transform, false);
+        slider = sliderGo.GetComponent<Slider>();
+        slider.minValue = 0; slider.maxValue = 100; slider.interactable = false; slider.value = seedValue;
+        Stretch(sliderGo.GetComponent<RectTransform>());
+        slider.fillRect = fillRoot.GetComponent<RectTransform>();
+        slider.targetGraphic = fillImg;
+
+        var labelText = CreateText(bar.transform, font, label, 46, TextAnchor.MiddleLeft, Color.white);
+        Anchor(labelText.rectTransform, 0f, 0.5f, 0f, 0.5f, new Vector2(96, 0), new Vector2(420, 70));
+
+        valueText = CreateText(bar.transform, font, "0%", 46, TextAnchor.MiddleRight, Color.white);
+        Anchor(valueText.rectTransform, 1f, 0.5f, 1f, 0.5f, new Vector2(-24, 0), new Vector2(240, 70));
+    }
+
+    private static Text CreateText(Transform parent, Font font, string text, int size, TextAnchor alignment, Color color)
     {
         var go = new GameObject("Text", typeof(RectTransform), typeof(Text));
         go.transform.SetParent(parent, false);
         var t = go.GetComponent<Text>();
-        t.font = font; t.text = text; t.fontSize = size; t.alignment = TextAnchor.MiddleCenter; t.color = Color.white;
-        go.GetComponent<RectTransform>().sizeDelta = new Vector2(760, 52);
+        t.font = font;
+        t.text = text;
+        t.fontSize = size;
+        t.alignment = alignment;
+        t.color = color;
+        t.horizontalOverflow = HorizontalWrapMode.Overflow;
+        t.verticalOverflow = VerticalWrapMode.Truncate;
         return t;
     }
 
-    private static Slider CreateBar(Transform parent, Color fill)
+    private static Button CreateActionButton(Transform parent, Font font, string label, string icon, Color color, Vector2 pos, UnityEngine.Events.UnityAction action)
     {
-        var sgo = new GameObject("Bar", typeof(RectTransform), typeof(Slider));
-        sgo.transform.SetParent(parent, false);
-        var s = sgo.GetComponent<Slider>(); s.minValue = 0; s.maxValue = 100; s.interactable = false;
-        var bg = new GameObject("Background", typeof(RectTransform), typeof(Image)); bg.transform.SetParent(sgo.transform,false);
-        bg.GetComponent<Image>().color = new Color(0.2f,0.2f,0.2f,0.9f);
-        var fillArea = new GameObject("Fill Area", typeof(RectTransform)); fillArea.transform.SetParent(sgo.transform,false);
-        var fg = new GameObject("Fill", typeof(RectTransform), typeof(Image)); fg.transform.SetParent(fillArea.transform,false);
-        fg.GetComponent<Image>().color = fill;
-        s.targetGraphic = fg.GetComponent<Image>();
-        s.fillRect = fg.GetComponent<RectTransform>();
+        var root = new GameObject(label + "Action", typeof(RectTransform));
+        root.transform.SetParent(parent, false);
+        Anchor(root.GetComponent<RectTransform>(), 0.5f, 0f, 0.5f, 0f, pos, new Vector2(260, 360));
 
-        var r = sgo.GetComponent<RectTransform>(); r.sizeDelta = new Vector2(700, 26);
-        Stretch(bg.GetComponent<RectTransform>()); Stretch(fillArea.GetComponent<RectTransform>()); Stretch(fg.GetComponent<RectTransform>());
-        return s;
+        var btnGo = new GameObject("Button", typeof(RectTransform), typeof(Image), typeof(Button));
+        btnGo.transform.SetParent(root.transform, false);
+        var img = btnGo.GetComponent<Image>();
+        img.color = color;
+        var rt = btnGo.GetComponent<RectTransform>();
+        Anchor(rt, 0.5f, 1f, 0.5f, 1f, new Vector2(0, -130), new Vector2(240, 240));
+
+        var b = btnGo.GetComponent<Button>();
+        b.onClick.AddListener(action);
+
+        var iconText = CreateText(btnGo.transform, font, icon, 72, TextAnchor.MiddleCenter, Color.white);
+        Anchor(iconText.rectTransform, 0.5f, 0.5f, 0.5f, 0.5f, Vector2.zero, new Vector2(170, 170));
+
+        var labelBg = new GameObject("LabelBg", typeof(RectTransform), typeof(Image));
+        labelBg.transform.SetParent(root.transform, false);
+        labelBg.GetComponent<Image>().color = new Color(0.17f, 0.2f, 0.35f, 0.95f);
+        Anchor(labelBg.GetComponent<RectTransform>(), 0.5f, 0f, 0.5f, 0f, new Vector2(0, 24), new Vector2(220, 78));
+
+        var text = CreateText(labelBg.transform, font, label, 44, TextAnchor.MiddleCenter, Color.white);
+        Stretch(text.rectTransform);
+        return b;
     }
 
-    private static Button CreateButton(Transform parent, Font font, string label, UnityEngine.Events.UnityAction action)
+    private static void Anchor(RectTransform rt, float minX, float minY, float maxX, float maxY, Vector2 anchoredPos, Vector2 size)
     {
-        var bgo = new GameObject(label + "Btn", typeof(RectTransform), typeof(Image), typeof(Button));
-        bgo.transform.SetParent(parent, false);
-        bgo.GetComponent<RectTransform>().sizeDelta = new Vector2(200, 80);
-        bgo.GetComponent<Image>().color = new Color(0.18f, 0.18f, 0.18f, 0.95f);
-        var b = bgo.GetComponent<Button>();
-        b.onClick.AddListener(action);
-        var t = new GameObject("Label", typeof(RectTransform), typeof(Text));
-        t.transform.SetParent(bgo.transform, false);
-        var tt = t.GetComponent<Text>(); tt.font = font; tt.text = label; tt.fontSize = 30; tt.alignment = TextAnchor.MiddleCenter; tt.color = Color.white;
-        t.GetComponent<RectTransform>().sizeDelta = new Vector2(190, 70);
-        return b;
+        rt.anchorMin = new Vector2(minX, minY);
+        rt.anchorMax = new Vector2(maxX, maxY);
+        rt.anchoredPosition = anchoredPos;
+        rt.sizeDelta = size;
     }
 
     private static void Stretch(RectTransform rt)
