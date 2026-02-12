@@ -30,3 +30,4 @@ reports/*.md
 reports/*.tsv
 reports/heartbeat.log
 reports/dirty_snapshot_*/
+tools/ci/unity_compile_gate.log
