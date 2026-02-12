@@ -73,10 +73,21 @@ mapfile -t ALL_TICKETS < <(find tickets -maxdepth 1 -type f -name 'T*.md' -print
 
 NEXT_TICKET=$(grep -o '"next_ticket"[[:space:]]*:[[:space:]]*"[^"]*"' "$STATE_FILE" | sed 's/.*"\([^"]*\)"$/\1/' || true)
 [[ -z "$NEXT_TICKET" ]] && NEXT_TICKET="T001"
-if [[ -n "${RUN_FROM:-}" ]]; then
+
+CLI_FROM="${1:-}"
+CLI_UNTIL="${2:-}"
+if [[ -n "$CLI_FROM" ]]; then
+  NEXT_TICKET="$CLI_FROM"
+elif [[ -n "${RUN_FROM:-}" ]]; then
   NEXT_TICKET="$RUN_FROM"
 fi
-RUN_UNTIL_TICKET="${RUN_UNTIL:-}"
+
+RUN_UNTIL_TICKET=""
+if [[ -n "$CLI_UNTIL" ]]; then
+  RUN_UNTIL_TICKET="$CLI_UNTIL"
+elif [[ -n "${RUN_UNTIL:-}" ]]; then
+  RUN_UNTIL_TICKET="${RUN_UNTIL}"
+fi
 
 LATEST_TSV="$(ls -1t ${REPORT_DIR}/run_*.tsv 2>/dev/null | head -n1 || true)"
 if [[ "$NEXT_TICKET" == "DONE" && -n "$LATEST_TSV" ]]; then
