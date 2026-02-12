@@ -216,3 +216,4 @@
 - 2026-02-12T16:35:16Z [T062] DONE: late replay executed from zip and artifact written to Docs/TicketRerun/T062.md.
 - 2026-02-12T16:35:19Z [T071] DONE: late replay executed from zip and artifact written to Docs/TicketRerun/T071.md.
 - 2026-02-12T16:35:22Z [T082] DONE: late replay executed from zip and artifact written to Docs/TicketRerun/T082.md.
+- 2026-02-12T16:35:25Z [T083] DONE: late replay executed from zip and artifact written to Docs/TicketRerun/T083.md.
