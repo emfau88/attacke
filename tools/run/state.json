@@ -1,6 +1,6 @@
 {
-  "next_ticket": "T001",
-  "last_checkpoint": "",
-  "last_run_report": "",
-  "updated_at": ""
+  "next_ticket": "DONE",
+  "last_checkpoint": "adbf3ad",
+  "last_run_report": "/home/ubuntu/workspace/attacke/reports/run_20260212T164437Z.json",
+  "updated_at": "2026-02-12T16:44:37Z"
 }
