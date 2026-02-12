@@ -12,7 +12,7 @@ public class Phase1Config : ScriptableObject
     public int warningThreshold = 42;
 
     public float uiLerpSpeed = 7f;
-    public float cooldownSeconds = 1.8f;
+    public float cooldownSeconds = 1.5f;
     public float questTargetSeconds = 28f;
     public int questMoodThreshold = 58;
 
