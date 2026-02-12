@@ -80,10 +80,14 @@ STATE
   fi
 
   if [[ -n "$(git status --porcelain)" ]]; then
-    git add -A
-    git commit -m "run(${ticket}): apply ticket"
-    git push origin main
-    commit_hash="$(git rev-parse --short HEAD)"
+    git add -A -- . ':(exclude)reports/**' ':(exclude)tools/run/state.json'
+    if [[ -n "$(git diff --cached --name-only)" ]]; then
+      git commit -m "run(${ticket}): apply ticket"
+      git push origin main
+      commit_hash="$(git rev-parse --short HEAD)"
+    else
+      commit_hash="$(git rev-parse --short HEAD)"
+    fi
   else
     commit_hash="$(git rev-parse --short HEAD)"
   fi
