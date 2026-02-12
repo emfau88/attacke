@@ -165,7 +165,13 @@ STATE
   PHASE="commit"
   commit_hash="$(git rev-parse --short HEAD)"
   if [[ -n "$(git status --porcelain)" ]]; then
-    git add -A -- . ':(exclude)reports/**' ':(exclude)tools/run/state.json'
+    git add -u
+
+    mapfile -t NEW_FILES < <(git ls-files --others --exclude-standard | grep -Ev '^(reports/|tools/run/state\.json$)' || true)
+    if [[ ${#NEW_FILES[@]} -gt 0 ]]; then
+      git add -- "${NEW_FILES[@]}"
+    fi
+
     if [[ -n "$(git diff --cached --name-only)" ]]; then
       PHASE="ci_pre_commit"
       if ! bash "${PROJECT_ROOT}/tools/ci/ci_run.sh" >"${REPORT_DIR}/${ticket}_ci.log" 2>&1; then
