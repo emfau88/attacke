@@ -6,6 +6,8 @@ public class PetState
     public int Hunger = 50;
     public int Mood = 50;
     public int Energy = 50;
+    public long LastSavedUnix = 0;
+    public int SaveVersion = 1;
 
     public PetState() { }
 

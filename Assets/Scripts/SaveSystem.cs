@@ -1,33 +1,63 @@
+using System;
 using UnityEngine;
 
 public static class SaveSystem
 {
-    private const string HungerKey = "pet_hunger";
-    private const string MoodKey = "pet_mood";
-    private const string EnergyKey = "pet_energy";
-    private const string HasSaveKey = "pet_has_save";
+    private const string SaveKey = "bulldog_save_v1";
+
+    [Serializable]
+    private class SaveEnvelope
+    {
+        public int version = 1;
+        public long timestampUnix;
+        public PetState pet;
+    }
 
     public static PetState Load()
     {
-        if (PlayerPrefs.GetInt(HasSaveKey, 0) == 0)
-            return new PetState(50, 50, 50);
+        var json = PlayerPrefs.GetString(SaveKey, string.Empty);
+        if (string.IsNullOrWhiteSpace(json))
+            return DefaultState();
 
-        var state = new PetState(
-            PlayerPrefs.GetInt(HungerKey, 50),
-            PlayerPrefs.GetInt(MoodKey, 50),
-            PlayerPrefs.GetInt(EnergyKey, 50)
-        );
-        state.ClampAll();
-        return state;
+        try
+        {
+            var envelope = JsonUtility.FromJson<SaveEnvelope>(json);
+            if (envelope == null || envelope.pet == null || envelope.version != 1)
+                return DefaultState();
+
+            envelope.pet.SaveVersion = envelope.version;
+            envelope.pet.LastSavedUnix = envelope.timestampUnix;
+            envelope.pet.ClampAll();
+            return envelope.pet;
+        }
+        catch
+        {
+            return DefaultState();
+        }
     }
 
     public static void Save(PetState state)
     {
         state.ClampAll();
-        PlayerPrefs.SetInt(HungerKey, state.Hunger);
-        PlayerPrefs.SetInt(MoodKey, state.Mood);
-        PlayerPrefs.SetInt(EnergyKey, state.Energy);
-        PlayerPrefs.SetInt(HasSaveKey, 1);
+        state.SaveVersion = 1;
+        state.LastSavedUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+        var envelope = new SaveEnvelope
+        {
+            version = 1,
+            timestampUnix = state.LastSavedUnix,
+            pet = state
+        };
+
+        PlayerPrefs.SetString(SaveKey, JsonUtility.ToJson(envelope));
         PlayerPrefs.Save();
     }
+
+    public static void ResetToDefault()
+    {
+        PlayerPrefs.DeleteKey(SaveKey);
+        PlayerPrefs.Save();
+    }
+
+    public static PetState DefaultState() => new PetState(50, 50, 50);
 }
