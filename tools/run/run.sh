@@ -199,6 +199,16 @@ STATE
     continue
   fi
 
+  if [[ "$ticket" > "T240" && "$ticket" < "T261" ]]; then
+    if ! git diff --name-only | grep -q '^Assets/'; then
+      set_phase "report"
+      "$ROLLBACK_SCRIPT" "$checkpoint"
+      reverts=$((reverts+1))
+      echo -e "${ticket}\tfailed\t${checkpoint}\t-\t12\tfailed\tassets_change_required\tno_assets_change_detected\tyes" >> "$LOG_TSV"
+      continue
+    fi
+  fi
+
   set_phase "gate"
   set +e
   GATE_EXPECT_CLEAN=0 "$GATES_SCRIPT" >"${REPORT_DIR}/${ticket}_gates.log" 2>&1
