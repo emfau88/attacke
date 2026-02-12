@@ -20,7 +20,11 @@ public class PetController : MonoBehaviour
     private Image dogImage;
     private Image dogEarLeft;
     private Image dogEarRight;
+    private Image dogInnerEarLeft;
+    private Image dogInnerEarRight;
     private Image dogMuzzle;
+    private Image dogNose;
+    private Image dogMouth;
     private Image dogEyeLeft;
     private Image dogEyeRight;
     private RectTransform dogRoot;
@@ -209,7 +213,10 @@ public class PetController : MonoBehaviour
 
         var baseColor = new Color(0.85f, 0.75f, 0.6f);
         var muzzleColor = new Color(0.95f, 0.89f, 0.8f);
+        var innerEarColor = new Color(0.95f, 0.64f, 0.62f);
         var eyeColor = new Color(0.1f, 0.12f, 0.18f);
+        var noseColor = new Color(0.18f, 0.14f, 0.17f);
+        var mouthColor = new Color(0.52f, 0.24f, 0.24f);
         var yOffset = -80f;
         var earScale = 1f;
 
@@ -218,28 +225,40 @@ public class PetController : MonoBehaviour
             case DogMoodState.Happy:
                 baseColor = new Color(0.95f, 0.75f, 0.42f);
                 muzzleColor = new Color(1f, 0.93f, 0.82f);
+                innerEarColor = new Color(1f, 0.7f, 0.68f);
                 eyeColor = new Color(0.07f, 0.08f, 0.14f);
+                noseColor = new Color(0.12f, 0.1f, 0.12f);
+                mouthColor = new Color(0.7f, 0.26f, 0.3f);
                 yOffset = -70f;
                 earScale = 1.05f;
                 break;
             case DogMoodState.Tired:
                 baseColor = new Color(0.65f, 0.66f, 0.86f);
                 muzzleColor = new Color(0.86f, 0.88f, 0.95f);
+                innerEarColor = new Color(0.84f, 0.74f, 0.82f);
                 eyeColor = new Color(0.2f, 0.22f, 0.34f);
+                noseColor = new Color(0.22f, 0.22f, 0.28f);
+                mouthColor = new Color(0.42f, 0.32f, 0.42f);
                 yOffset = -95f;
                 earScale = 0.92f;
                 break;
             case DogMoodState.Hungry:
                 baseColor = new Color(0.98f, 0.62f, 0.35f);
                 muzzleColor = new Color(0.95f, 0.86f, 0.75f);
+                innerEarColor = new Color(0.94f, 0.58f, 0.5f);
                 eyeColor = new Color(0.15f, 0.1f, 0.08f);
+                noseColor = new Color(0.22f, 0.15f, 0.12f);
+                mouthColor = new Color(0.58f, 0.25f, 0.2f);
                 yOffset = -88f;
                 earScale = 0.95f;
                 break;
             case DogMoodState.Sick:
                 baseColor = new Color(0.54f, 0.56f, 0.58f);
                 muzzleColor = new Color(0.76f, 0.77f, 0.78f);
+                innerEarColor = new Color(0.68f, 0.66f, 0.66f);
                 eyeColor = new Color(0.2f, 0.2f, 0.2f);
+                noseColor = new Color(0.2f, 0.2f, 0.2f);
+                mouthColor = new Color(0.32f, 0.28f, 0.28f);
                 yOffset = -102f;
                 earScale = 0.86f;
                 break;
@@ -247,8 +266,12 @@ public class PetController : MonoBehaviour
 
         dogImage.color = baseColor;
         if (dogMuzzle != null) dogMuzzle.color = muzzleColor;
+        if (dogInnerEarLeft != null) dogInnerEarLeft.color = innerEarColor;
+        if (dogInnerEarRight != null) dogInnerEarRight.color = innerEarColor;
         if (dogEyeLeft != null) dogEyeLeft.color = eyeColor;
         if (dogEyeRight != null) dogEyeRight.color = eyeColor;
+        if (dogNose != null) dogNose.color = noseColor;
+        if (dogMouth != null) dogMouth.color = mouthColor;
 
         if (dogRoot != null) dogRoot.anchoredPosition = new Vector2(0f, yOffset);
         if (dogEarLeft != null) dogEarLeft.rectTransform.localScale = Vector3.one * earScale;
@@ -357,6 +380,18 @@ public class PetController : MonoBehaviour
         dogEarRight.color = new Color(0.72f, 0.48f, 0.31f);
         Anchor(earR.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(120, 120), new Vector2(92, 150));
 
+        var earInnerL = new GameObject("DogInnerEarLeft", typeof(RectTransform), typeof(Image));
+        earInnerL.transform.SetParent(earL.transform, false);
+        dogInnerEarLeft = earInnerL.GetComponent<Image>();
+        dogInnerEarLeft.color = new Color(0.95f, 0.64f, 0.62f);
+        Anchor(earInnerL.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -12), new Vector2(52, 96));
+
+        var earInnerR = new GameObject("DogInnerEarRight", typeof(RectTransform), typeof(Image));
+        earInnerR.transform.SetParent(earR.transform, false);
+        dogInnerEarRight = earInnerR.GetComponent<Image>();
+        dogInnerEarRight.color = new Color(0.95f, 0.64f, 0.62f);
+        Anchor(earInnerR.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -12), new Vector2(52, 96));
+
         var dog = new GameObject("DogBody", typeof(RectTransform), typeof(Image));
         dog.transform.SetParent(dogContainer.transform, false);
         dogImage = dog.GetComponent<Image>();
@@ -380,6 +415,18 @@ public class PetController : MonoBehaviour
         dogEyeRight = eyeR.GetComponent<Image>();
         dogEyeRight.color = new Color(0.1f, 0.12f, 0.18f);
         Anchor(eyeR.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(62, 34), new Vector2(34, 34));
+
+        var nose = new GameObject("DogNose", typeof(RectTransform), typeof(Image));
+        nose.transform.SetParent(dogContainer.transform, false);
+        dogNose = nose.GetComponent<Image>();
+        dogNose.color = new Color(0.18f, 0.14f, 0.17f);
+        Anchor(nose.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -6), new Vector2(58, 36));
+
+        var mouth = new GameObject("DogMouth", typeof(RectTransform), typeof(Image));
+        mouth.transform.SetParent(dogContainer.transform, false);
+        dogMouth = mouth.GetComponent<Image>();
+        dogMouth.color = new Color(0.52f, 0.24f, 0.24f);
+        Anchor(mouth.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -52), new Vector2(74, 18));
 
         dogStateText = CreateText(root.transform, font, "State: Idle", 34, TextAnchor.MiddleCenter, Color.white);
         Anchor(dogStateText.rectTransform, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -330), new Vector2(860, 56));
