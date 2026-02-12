@@ -11,35 +11,90 @@ cd "$PROJECT_ROOT"
 mkdir -p "$REPORT_DIR"
 
 CURRENT_TICKET="-"
-PHASE="init"
+PHASE="precheck"
 LAST_COMMIT="$(git rev-parse --short HEAD 2>/dev/null || echo '-')"
+RUN_ID="$(date -u +%Y%m%dT%H%M%SZ)"
+LOG_TSV="${REPORT_DIR}/run_${RUN_ID}.tsv"
+: > "$LOG_TSV"
+
+json_path=""
+md_path=""
+chat_summary=""
+reverts=0
+FINALIZED=0
+
+log_heartbeat() {
+  local clean="yes"
+  if [[ -n "$(git status --porcelain)" ]]; then clean="no"; fi
+  LAST_COMMIT="$(git rev-parse --short HEAD 2>/dev/null || echo '-')"
+  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) ticket=${CURRENT_TICKET} phase=${PHASE} last_commit=${LAST_COMMIT} git_clean=${clean}" >> "${REPORT_DIR}/heartbeat.log"
+}
+
+set_phase() {
+  local p="$1"
+  PHASE="$p"
+  log_heartbeat
+}
 
 heartbeat_loop() {
   while true; do
-    clean="yes"
-    if [[ -n "$(git status --porcelain)" ]]; then clean="no"; fi
-    echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) ticket=${CURRENT_TICKET} phase=${PHASE} last_commit=${LAST_COMMIT} git_clean=${clean}" >> "${REPORT_DIR}/heartbeat.log"
+    log_heartbeat
     sleep 60
   done
 }
 
+finalize() {
+  local exit_code=$?
+
+  if [[ -n "${HEARTBEAT_PID:-}" ]]; then
+    kill "$HEARTBEAT_PID" >/dev/null 2>&1 || true
+  fi
+
+  if [[ "$FINALIZED" -eq 0 ]]; then
+    set_phase "report"
+    if [[ -s "$LOG_TSV" ]] || [[ ! -f "$chat_summary" ]]; then
+      readarray -t report_paths < <("${PROJECT_ROOT}/tools/run/report.sh" "$RUN_ID" "$LOG_TSV" "$REPORT_DIR" "$reverts")
+      json_path="${report_paths[0]}"
+      md_path="${report_paths[1]}"
+      chat_summary="${report_paths[2]}"
+    fi
+
+    if [[ -f "$chat_summary" ]]; then
+      echo "run_complete"
+      echo "json_report=${json_path}"
+      echo "md_report=${md_path}"
+      echo "chat_summary=${chat_summary}"
+      echo "----CHAT_SUMMARY_START----"
+      cat "$chat_summary"
+      echo "----CHAT_SUMMARY_END----"
+    fi
+
+    echo "----RUN_SELF_CHECK----"
+    tail -n 5 "${REPORT_DIR}/heartbeat.log" 2>/dev/null || true
+    ls -1t "${REPORT_DIR}"/run_*.tsv 2>/dev/null | head -n 1 || true
+    echo "----RUN_SELF_CHECK_END----"
+
+    FINALIZED=1
+  fi
+
+  set_phase "done"
+  exit "$exit_code"
+}
+
 heartbeat_loop &
 HEARTBEAT_PID=$!
-cleanup() {
-  kill "$HEARTBEAT_PID" >/dev/null 2>&1 || true
-}
-trap cleanup EXIT
+trap finalize EXIT
 
 if ! command -v git >/dev/null 2>&1; then
   echo "preflight: git not found" >&2
   exit 2
 fi
 
+set_phase "precheck"
 git fetch origin main
 
 # dirty recovery path
 if [[ -n "$(git status --porcelain)" ]]; then
-  PHASE="dirty_recovery"
   SNAP_DIR="${REPORT_DIR}/dirty_snapshot_$(date -u +%Y%m%dT%H%M%SZ)"
   mkdir -p "$SNAP_DIR"
   git status --short > "${SNAP_DIR}/status.txt" || true
@@ -64,10 +119,6 @@ fi
 
 git checkout main
 git pull --rebase origin main
-
-RUN_ID="$(date -u +%Y%m%dT%H%M%SZ)"
-LOG_TSV="${REPORT_DIR}/run_${RUN_ID}.tsv"
-: > "$LOG_TSV"
 
 mapfile -t ALL_TICKETS < <(find tickets -maxdepth 1 -type f -name 'T*.md' -printf '%f\n' | sed 's/\.md$//' | sort)
 
@@ -110,20 +161,14 @@ for i in "${!ALL_TICKETS[@]}"; do
     break
   fi
 done
-
-if [[ $start_index -lt 0 ]]; then
-  start_index=0
-fi
-
-reverts=0
+[[ $start_index -lt 0 ]] && start_index=0
 
 for ((i=start_index; i<${#ALL_TICKETS[@]}; i++)); do
   ticket="${ALL_TICKETS[$i]}"
-  if [[ -n "$RUN_UNTIL_TICKET" ]]; then
-    if [[ "$ticket" > "$RUN_UNTIL_TICKET" ]]; then
-      break
-    fi
+  if [[ -n "$RUN_UNTIL_TICKET" && "$ticket" > "$RUN_UNTIL_TICKET" ]]; then
+    break
   fi
+
   ticket_file="tickets/${ticket}.md"
   CURRENT_TICKET="$ticket"
   LAST_COMMIT="$(git rev-parse --short HEAD)"
@@ -140,21 +185,21 @@ for ((i=start_index; i<${#ALL_TICKETS[@]}; i++)); do
 STATE
   mv "${STATE_FILE}.tmp" "$STATE_FILE"
 
-  PHASE="apply"
+  set_phase "apply"
   set +e
   "$APPLY_SCRIPT" "$ticket_file" >"${REPORT_DIR}/${ticket}_apply.log" 2>&1
   apply_rc=$?
   set -e
 
   if [[ $apply_rc -ne 0 ]]; then
-    PHASE="rollback"
+    set_phase "report"
     "$ROLLBACK_SCRIPT" "$checkpoint"
     reverts=$((reverts+1))
     echo -e "${ticket}\tfailed\t${checkpoint}\t-\t-\tskipped\tapply_failed\tapply_failed_rc_${apply_rc}\tyes" >> "$LOG_TSV"
     continue
   fi
 
-  PHASE="gate"
+  set_phase "gate"
   set +e
   GATE_EXPECT_CLEAN=0 "$GATES_SCRIPT" >"${REPORT_DIR}/${ticket}_gates.log" 2>&1
   gate_rc=$?
@@ -166,16 +211,16 @@ STATE
   [[ -z "$gate_detail" ]] && gate_detail="gate_log_parse_failed"
 
   if [[ $gate_rc -ne 0 ]]; then
-    PHASE="rollback"
+    set_phase "report"
     "$ROLLBACK_SCRIPT" "$checkpoint"
     reverts=$((reverts+1))
     echo -e "${ticket}\tfailed\t${checkpoint}\t-\t${gate_rc}\t${gate_status}\t${gate_detail}\tgate_failed_rc_${gate_rc}\tyes" >> "$LOG_TSV"
     continue
   fi
 
-  PHASE="commit"
   commit_hash="$(git rev-parse --short HEAD)"
   if [[ -n "$(git status --porcelain)" ]]; then
+    set_phase "commit"
     git add -u
 
     mapfile -t NEW_FILES < <(git ls-files --others --exclude-standard | grep -Ev '^(reports/|tools/run/state\.json$)' || true)
@@ -184,17 +229,18 @@ STATE
     fi
 
     if [[ -n "$(git diff --cached --name-only)" ]]; then
-      PHASE="ci_pre_commit"
+      set_phase "ci"
       if ! bash "${PROJECT_ROOT}/tools/ci/ci_run.sh" >"${REPORT_DIR}/${ticket}_ci.log" 2>&1; then
-        PHASE="rollback"
+        set_phase "report"
         "$ROLLBACK_SCRIPT" "$checkpoint"
         reverts=$((reverts+1))
         echo -e "${ticket}\tfailed\t${checkpoint}\t-\t1\tfailed\tci_gate_failed\tci_run_failed\tyes" >> "$LOG_TSV"
         continue
       fi
 
-      PHASE="commit"
+      set_phase "commit"
       git commit -m "run(${ticket}): apply ticket"
+      set_phase "push"
       git push origin main
       commit_hash="$(git rev-parse --short HEAD)"
       LAST_COMMIT="$commit_hash"
@@ -218,7 +264,7 @@ STATE
   mv "${STATE_FILE}.tmp" "$STATE_FILE"
 done
 
-PHASE="report"
+set_phase "report"
 readarray -t report_paths < <("${PROJECT_ROOT}/tools/run/report.sh" "$RUN_ID" "$LOG_TSV" "$REPORT_DIR" "$reverts")
 json_path="${report_paths[0]}"
 md_path="${report_paths[1]}"
@@ -235,10 +281,4 @@ cat > "${STATE_FILE}.tmp" <<STATE
 STATE
 mv "${STATE_FILE}.tmp" "$STATE_FILE"
 
-echo "run_complete"
-echo "json_report=${json_path}"
-echo "md_report=${md_path}"
-echo "chat_summary=${chat_summary}"
-echo "----CHAT_SUMMARY_START----"
-cat "$chat_summary"
-echo "----CHAT_SUMMARY_END----"
+set_phase "done"

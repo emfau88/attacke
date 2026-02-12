@@ -11,6 +11,10 @@ SUMMARY_PATH="${OUT_DIR}/chat_summary_${RUN_ID}.txt"
 
 completed=()
 failed=()
+first_failure=""
+success_count=0
+fail_count=0
+skip_count=0
 
 {
   echo "{"
@@ -26,8 +30,15 @@ failed=()
 
     if [[ "$status" == "success" ]]; then
       completed+=("$ticket:$commit")
-    else
+      success_count=$((success_count+1))
+    elif [[ "$status" == "failed" ]]; then
       failed+=("$ticket:$error:$gate_code")
+      fail_count=$((fail_count+1))
+      if [[ -z "$first_failure" ]]; then
+        first_failure="$ticket|$gate_status|$gate_detail|$error|checkpoint=$checkpoint"
+      fi
+    else
+      skip_count=$((skip_count+1))
     fi
 
     if [[ $first -eq 0 ]]; then echo "    ,"; fi
@@ -65,6 +76,9 @@ failed=()
 
 {
   echo "Run ${RUN_ID}"
+  echo "Counts: success=${success_count} fail=${fail_count} skip=${skip_count}"
+  echo
+
   echo "Completed tickets range:"
   if [[ ${#completed[@]} -eq 0 ]]; then
     echo "- none"
@@ -78,6 +92,15 @@ failed=()
     echo "- none"
   else
     printf -- '- %s\n' "${failed[@]}"
+  fi
+
+  echo
+  echo "First failure:"
+  if [[ -n "$first_failure" ]]; then
+    echo "- ${first_failure}"
+    echo "Next steps: inspect per-ticket apply/gate/ci logs and fix the smallest root cause before retry."
+  else
+    echo "- none"
   fi
 
   echo
