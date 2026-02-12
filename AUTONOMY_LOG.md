@@ -194,3 +194,4 @@
 - 2026-02-12T16:33:33Z [T073] DONE: rerun executed from zip and artifact written to Docs/TicketRerun/T073.md.
 - 2026-02-12T16:33:35Z [T086] DONE: rerun executed from zip and artifact written to Docs/TicketRerun/T086.md.
 - 2026-02-12T16:33:35Z [T074] DONE: rerun executed from zip and artifact written to Docs/TicketRerun/T074.md.
+- 2026-02-12T16:33:38Z [T087] DONE: rerun executed from zip and artifact written to Docs/TicketRerun/T087.md.
