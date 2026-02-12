@@ -1,4 +1,0 @@
-reports/dirty_snapshot_20260212T165927Z/diff.patch
-reports/dirty_snapshot_20260212T165927Z/status.txt
-reports/dirty_snapshot_20260212T165927Z/untracked.txt
-reports/heartbeat.log

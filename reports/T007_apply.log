@@ -1,5 +1,0 @@
-[apply_ticket] ACTIONS start
-[apply_ticket] MKDIR docs/ticket-specs
-[apply_ticket] WRITE docs/ticket-specs/T007.md
-[apply_ticket] ACTIONS done
-[apply_ticket] success: T007.md

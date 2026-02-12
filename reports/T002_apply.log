@@ -1,4 +1,0 @@
-[apply_ticket] ACTIONS start
-[apply_ticket] REPLACE docs/test.txt
-[apply_ticket] ACTIONS done
-[apply_ticket] success: T002.md

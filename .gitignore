@@ -22,3 +22,11 @@ UserSettings/
 *.suo
 *.user
 *.userprefs
+reports/
+tools/run/state.json
+reports/*.log
+reports/*.json
+reports/*.md
+reports/*.tsv
+reports/heartbeat.log
+reports/dirty_snapshot_*/
