@@ -1,0 +1,94 @@
+{
+  "run_id": "20260212T165928Z",
+  "generated_at": "2026-02-12T17:01:22Z",
+  "tickets": [
+    {
+      "ticket": "T003",
+      "status": "success",
+      "checkpoint": "4ee9965",
+      "commit": "6fde30a",
+      "gate_code": "0",
+      "gate_status": "ok",
+      "gate_detail": "unity_compile_ok",
+      "error": "-",
+      "revert": "no"
+    }    ,
+    {
+      "ticket": "T004",
+      "status": "success",
+      "checkpoint": "6fde30a",
+      "commit": "5059d3f",
+      "gate_code": "0",
+      "gate_status": "ok",
+      "gate_detail": "unity_compile_ok",
+      "error": "-",
+      "revert": "no"
+    }    ,
+    {
+      "ticket": "T005",
+      "status": "success",
+      "checkpoint": "5059d3f",
+      "commit": "83a888f",
+      "gate_code": "0",
+      "gate_status": "ok",
+      "gate_detail": "unity_compile_ok",
+      "error": "-",
+      "revert": "no"
+    }    ,
+    {
+      "ticket": "T006",
+      "status": "success",
+      "checkpoint": "83a888f",
+      "commit": "c4c07a9",
+      "gate_code": "0",
+      "gate_status": "ok",
+      "gate_detail": "unity_compile_ok",
+      "error": "-",
+      "revert": "no"
+    }    ,
+    {
+      "ticket": "T007",
+      "status": "success",
+      "checkpoint": "c4c07a9",
+      "commit": "3205c18",
+      "gate_code": "0",
+      "gate_status": "ok",
+      "gate_detail": "unity_compile_ok",
+      "error": "-",
+      "revert": "no"
+    }    ,
+    {
+      "ticket": "T008",
+      "status": "success",
+      "checkpoint": "3205c18",
+      "commit": "0d0b0cd",
+      "gate_code": "0",
+      "gate_status": "ok",
+      "gate_detail": "unity_compile_ok",
+      "error": "-",
+      "revert": "no"
+    }    ,
+    {
+      "ticket": "T009",
+      "status": "success",
+      "checkpoint": "0d0b0cd",
+      "commit": "64d01ce",
+      "gate_code": "0",
+      "gate_status": "ok",
+      "gate_detail": "unity_compile_ok",
+      "error": "-",
+      "revert": "no"
+    }    ,
+    {
+      "ticket": "T010",
+      "status": "success",
+      "checkpoint": "64d01ce",
+      "commit": "d3fce88",
+      "gate_code": "0",
+      "gate_status": "ok",
+      "gate_detail": "unity_compile_ok",
+      "error": "-",
+      "revert": "no"
+    }
+  ]
+}

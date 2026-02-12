@@ -1,0 +1,44 @@
+Run 20260212T165928Z
+Completed tickets range:
+- T003:6fde30a
+- T004:5059d3f
+- T005:83a888f
+- T006:c4c07a9
+- T007:3205c18
+- T008:0d0b0cd
+- T009:64d01ce
+- T010:d3fce88
+
+Failed tickets (reason/exitcode):
+- none
+
+Reverts performed: 0
+Final git status:
+ M reports/unity_gate_latest.log
+ M tools/run/state.json
+?? reports/T003_apply.log
+?? reports/T003_gates.log
+?? reports/T004_apply.log
+?? reports/T004_gates.log
+?? reports/T005_apply.log
+?? reports/T005_gates.log
+?? reports/T006_apply.log
+?? reports/T006_gates.log
+?? reports/T007_apply.log
+?? reports/T007_gates.log
+?? reports/T008_apply.log
+?? reports/T008_gates.log
+?? reports/T009_apply.log
+?? reports/T009_gates.log
+?? reports/T010_apply.log
+?? reports/T010_gates.log
+?? reports/chat_summary_20260212T165928Z.txt
+?? reports/dirty_snapshot_20260212T165927Z/
+?? reports/heartbeat.log
+?? reports/run_20260212T165928Z.json
+?? reports/run_20260212T165928Z.md
+?? reports/run_20260212T165928Z.tsv
+
+Reports:
+- /home/ubuntu/workspace/attacke/reports/run_20260212T165928Z.md
+- /home/ubuntu/workspace/attacke/reports/run_20260212T165928Z.json
