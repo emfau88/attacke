@@ -372,9 +372,9 @@ public class PetController : MonoBehaviour
         var title = CreateText(root.transform, font, "Bulldog Buddy", 48, TextAnchor.MiddleCenter, Color.white);
         Anchor(title.rectTransform, 0.5f, 1f, 0.5f, 1f, new Vector2(0, -54), new Vector2(760, 64));
 
-        CreateStatusBar(root.transform, font, "Hunger", "🍖", "Art/ui/bar_hunger", new Color(1f, 0.63f, 0.2f), out hungerBar, out hungerText, 1f, -170f, 51);
-        CreateStatusBar(root.transform, font, "Mood", "♥", "Art/ui/bar_mood", new Color(0.3f, 0.76f, 1f), out moodBar, out moodText, 1f, -300f, 75);
-        CreateStatusBar(root.transform, font, "Energy", "⚡", "Art/ui/bar_energy", new Color(0.45f, 0.88f, 0.38f), out energyBar, out energyText, 1f, -430f, 73);
+        CreateStatusBar(root.transform, font, "Hunger", "🍖", "Art/ui/bar_hunger_empty", new Color(1f, 0.63f, 0.2f), out hungerBar, out hungerText, 1f, -170f, 51);
+        CreateStatusBar(root.transform, font, "Mood", "♥", "Art/ui/bar_mood_empty", new Color(0.3f, 0.76f, 1f), out moodBar, out moodText, 1f, -300f, 75);
+        CreateStatusBar(root.transform, font, "Energy", "⚡", "Art/ui/bar_energy_empty", new Color(0.45f, 0.88f, 0.38f), out energyBar, out energyText, 1f, -430f, 73);
 
         var questPanel = new GameObject("QuestPanel", typeof(RectTransform), typeof(Image));
         questPanel.transform.SetParent(root.transform, false);
@@ -564,7 +564,7 @@ public class PetController : MonoBehaviour
         var fillRoot = new GameObject("Fill", typeof(RectTransform), typeof(Image));
         fillRoot.transform.SetParent(bar.transform, false);
         var fillImg = fillRoot.GetComponent<Image>();
-        fillImg.color = skin != null ? new Color(fillColor.r, fillColor.g, fillColor.b, 0.45f) : fillColor;
+        fillImg.color = skin != null ? new Color(fillColor.r, fillColor.g, fillColor.b, 0.78f) : fillColor;
         Anchor(fillRoot.GetComponent<RectTransform>(), 0f, 0f, 0f, 1f, new Vector2(8, 0), new Vector2(620, -14));
 
         var sliderGo = new GameObject("Slider", typeof(RectTransform), typeof(Slider));
