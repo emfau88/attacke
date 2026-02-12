@@ -81,8 +81,9 @@ if [[ $has_actions -eq 1 ]]; then
       continue
     fi
 
-    if [[ "$line" =~ ^WRITE[[:space:]]+(.+)[[:space:]]+<<<EOF$ ]]; then
-      rel="${BASH_REMATCH[1]}"
+    if [[ "$line" == WRITE*' <<<EOF' ]]; then
+      rel="${line#WRITE }"
+      rel="${rel% <<<EOF}"
       validate_relpath "$rel" || { echo "[apply_ticket] invalid path in WRITE: $rel" >&2; exit 11; }
       content_file="$tmpdir/write_${i}.txt"
       {
