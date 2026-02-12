@@ -204,3 +204,4 @@
 - 2026-02-12T16:34:19Z [T093] SKIP: ticket source not found in /tmp/ticketpack20/tickets
 - 2026-02-12T16:34:22Z [T094] SKIP: ticket source not found in /tmp/ticketpack20/tickets
 - 2026-02-12T16:34:25Z [T095] SKIP: ticket source not found in /tmp/ticketpack20/tickets
+- 2026-02-12T16:34:28Z [T096] SKIP: ticket source not found in /tmp/ticketpack20/tickets
