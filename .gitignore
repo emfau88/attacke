@@ -10,4 +10,15 @@ Recordings/
 .vscode/
 .idea/
 .DS_Store
-Thumbs.db
+Thumbs.dbLibrary/
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+UserSettings/
+.vs/
+*.csproj
+*.suo
+*.user
+*.userprefs
