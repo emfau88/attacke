@@ -8,7 +8,7 @@ public class Phase1Config : ScriptableObject
     public int driftMoodDelta = -3;
     public int driftEnergyDelta = -3;
 
-    public int criticalThreshold = 19;
+    public int criticalThreshold = 15;
     public int warningThreshold = 45;
 
     public float uiLerpSpeed = 7f;
