@@ -327,9 +327,9 @@ public class PetController : MonoBehaviour
         var title = CreateText(root.transform, font, "Bulldog Buddy", 48, TextAnchor.MiddleCenter, Color.white);
         Anchor(title.rectTransform, 0.5f, 1f, 0.5f, 1f, new Vector2(0, -54), new Vector2(760, 64));
 
-        CreateStatusBar(root.transform, font, "Hunger", new Color(1f, 0.63f, 0.2f), out hungerBar, out hungerText, 1f, -170f, 51);
-        CreateStatusBar(root.transform, font, "Mood", new Color(0.3f, 0.76f, 1f), out moodBar, out moodText, 1f, -300f, 75);
-        CreateStatusBar(root.transform, font, "Energy", new Color(0.45f, 0.88f, 0.38f), out energyBar, out energyText, 1f, -430f, 73);
+        CreateStatusBar(root.transform, font, "Hunger", "🍖", new Color(1f, 0.63f, 0.2f), out hungerBar, out hungerText, 1f, -170f, 51);
+        CreateStatusBar(root.transform, font, "Mood", "♥", new Color(0.3f, 0.76f, 1f), out moodBar, out moodText, 1f, -300f, 75);
+        CreateStatusBar(root.transform, font, "Energy", "⚡", new Color(0.45f, 0.88f, 0.38f), out energyBar, out energyText, 1f, -430f, 73);
 
         var questPanel = new GameObject("QuestPanel", typeof(RectTransform), typeof(Image));
         questPanel.transform.SetParent(root.transform, false);
@@ -411,7 +411,7 @@ public class PetController : MonoBehaviour
 #endif
     }
 
-    private static void CreateStatusBar(Transform parent, Font font, string label, Color fillColor, out Slider slider, out Text valueText, float anchorX, float y, int seedValue)
+    private static void CreateStatusBar(Transform parent, Font font, string label, string icon, Color fillColor, out Slider slider, out Text valueText, float anchorX, float y, int seedValue)
     {
         var bar = new GameObject($"{label}Bar", typeof(RectTransform), typeof(Image));
         bar.transform.SetParent(parent, false);
@@ -419,11 +419,17 @@ public class PetController : MonoBehaviour
         barBg.color = new Color(0.13f, 0.16f, 0.3f, 0.95f);
         Anchor(bar.GetComponent<RectTransform>(), anchorX, 1f, anchorX, 1f, new Vector2(0, y), new Vector2(940, 110));
 
+        var frame = new GameObject("Frame", typeof(RectTransform), typeof(Image));
+        frame.transform.SetParent(bar.transform, false);
+        var frameImg = frame.GetComponent<Image>();
+        frameImg.color = new Color(1f, 1f, 1f, 0.18f);
+        Anchor(frame.GetComponent<RectTransform>(), 0f, 0f, 1f, 1f, Vector2.zero, new Vector2(-8, -8));
+
         var fillRoot = new GameObject("Fill", typeof(RectTransform), typeof(Image));
         fillRoot.transform.SetParent(bar.transform, false);
         var fillImg = fillRoot.GetComponent<Image>();
         fillImg.color = fillColor;
-        Anchor(fillRoot.GetComponent<RectTransform>(), 0f, 0f, 0f, 0f, new Vector2(12, 12), new Vector2(620, 86));
+        Anchor(fillRoot.GetComponent<RectTransform>(), 0f, 0f, 0f, 1f, new Vector2(8, 0), new Vector2(620, -14));
 
         var sliderGo = new GameObject("Slider", typeof(RectTransform), typeof(Slider));
         sliderGo.transform.SetParent(bar.transform, false);
@@ -432,6 +438,14 @@ public class PetController : MonoBehaviour
         Stretch(sliderGo.GetComponent<RectTransform>());
         slider.fillRect = fillRoot.GetComponent<RectTransform>();
         slider.targetGraphic = fillImg;
+
+        var iconBadge = new GameObject("IconBadge", typeof(RectTransform), typeof(Image));
+        iconBadge.transform.SetParent(bar.transform, false);
+        iconBadge.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.22f);
+        Anchor(iconBadge.GetComponent<RectTransform>(), 0f, 0.5f, 0f, 0.5f, new Vector2(54, 0), new Vector2(64, 64));
+
+        var iconText = CreateText(iconBadge.transform, font, icon, 38, TextAnchor.MiddleCenter, Color.white);
+        Stretch(iconText.rectTransform);
 
         var labelText = CreateText(bar.transform, font, label, 46, TextAnchor.MiddleLeft, Color.white);
         Anchor(labelText.rectTransform, 0f, 0.5f, 0f, 0.5f, new Vector2(96, 0), new Vector2(420, 70));
@@ -442,7 +456,7 @@ public class PetController : MonoBehaviour
 
     private static Text CreateText(Transform parent, Font font, string text, int size, TextAnchor alignment, Color color)
     {
-        var go = new GameObject("Text", typeof(RectTransform), typeof(Text));
+        var go = new GameObject("Text", typeof(RectTransform), typeof(Text), typeof(Outline));
         go.transform.SetParent(parent, false);
         var t = go.GetComponent<Text>();
         t.font = font;
@@ -452,6 +466,9 @@ public class PetController : MonoBehaviour
         t.color = color;
         t.horizontalOverflow = HorizontalWrapMode.Overflow;
         t.verticalOverflow = VerticalWrapMode.Truncate;
+        var outline = go.GetComponent<Outline>();
+        outline.effectColor = new Color(0.08f, 0.12f, 0.22f, 0.85f);
+        outline.effectDistance = new Vector2(2f, -2f);
         return t;
     }
 
@@ -467,6 +484,12 @@ public class PetController : MonoBehaviour
         img.color = color;
         var rt = btnGo.GetComponent<RectTransform>();
         Anchor(rt, 0.5f, 1f, 0.5f, 1f, new Vector2(0, -130), new Vector2(240, 240));
+
+        var gloss = new GameObject("Gloss", typeof(RectTransform), typeof(Image));
+        gloss.transform.SetParent(btnGo.transform, false);
+        var glossImg = gloss.GetComponent<Image>();
+        glossImg.color = new Color(1f, 1f, 1f, 0.2f);
+        Anchor(gloss.GetComponent<RectTransform>(), 0.5f, 1f, 0.5f, 1f, new Vector2(0, -32), new Vector2(180, 60));
 
         var b = btnGo.GetComponent<Button>();
         b.onClick.AddListener(action);
