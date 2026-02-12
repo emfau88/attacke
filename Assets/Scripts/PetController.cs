@@ -125,6 +125,7 @@ public class PetController : MonoBehaviour
     private void Feed() => UseAction(-15, +2, 0, "Feed", new Color(1f, 0.7f, 0.2f));
     private void Play() => UseAction(+5, +10, -5, "Play", new Color(0.4f, 0.8f, 1f));
     private void Sleep() => UseAction(+5, +2, +15, "Sleep", new Color(0.5f, 0.9f, 0.5f));
+    private void AuxAction() => ShowToast("Soon", new Color(0.95f, 0.95f, 1f));
 
     private void UseAction(int dh, int dm, int de, string label, Color color)
     {
@@ -457,9 +458,15 @@ public class PetController : MonoBehaviour
         Stretch(saveText.rectTransform);
         saveBadgeBg.gameObject.SetActive(false);
 
-        feedBtn = CreateActionButton(root.transform, font, "Feed", "🍖", "Art/ui/btn_feed", new Color(0.31f, 0.84f, 0.49f), new Vector2(-300, -620), Feed);
-        playBtn = CreateActionButton(root.transform, font, "Play", "🔴", "Art/ui/btn_play", new Color(1f, 0.66f, 0.23f), new Vector2(0, -620), Play);
-        sleepBtn = CreateActionButton(root.transform, font, "Sleep", "🌙", "Art/ui/btn_sleep", new Color(0.39f, 0.56f, 1f), new Vector2(300, -620), Sleep);
+        feedBtn = CreateActionButton(root.transform, font, "Feed", "🍖", "Art/ui/buttons/btn_food", new Color(0.31f, 0.84f, 0.49f), new Vector2(-420, -560), Feed);
+        playBtn = CreateActionButton(root.transform, font, "Play", "🔴", "Art/ui/buttons/btn_ball", new Color(1f, 0.66f, 0.23f), new Vector2(-140, -560), Play);
+        sleepBtn = CreateActionButton(root.transform, font, "Sleep", "🌙", "Art/ui/buttons/btn_sleep", new Color(0.39f, 0.56f, 1f), new Vector2(140, -560), Sleep);
+
+        CreateActionButton(root.transform, font, "Treat", "🦴", "Art/ui/buttons/btn_bone", new Color(0.94f, 0.42f, 0.24f), new Vector2(390, -560), AuxAction);
+        CreateActionButton(root.transform, font, "Rope", "🪢", "Art/ui/buttons/btn_rope", new Color(0.95f, 0.7f, 0.2f), new Vector2(-390, -810), AuxAction);
+        CreateActionButton(root.transform, font, "Duck", "🦆", "Art/ui/buttons/btn_duck", new Color(0.35f, 0.65f, 1f), new Vector2(-130, -810), AuxAction);
+        CreateActionButton(root.transform, font, "Medkit", "➕", "Art/ui/buttons/btn_medkit", new Color(0.4f, 0.65f, 1f), new Vector2(130, -810), AuxAction);
+        CreateActionButton(root.transform, font, "Vitamins", "🧴", "Art/ui/buttons/btn_medicine", new Color(0.4f, 0.85f, 0.45f), new Vector2(390, -810), AuxAction);
 
         cooldownText = CreateText(root.transform, font, "", 30, TextAnchor.MiddleCenter, new Color(0.95f, 0.95f, 1f));
         Anchor(cooldownText.rectTransform, 0.5f, 0f, 0.5f, 0f, new Vector2(0, 170), new Vector2(740, 50));
@@ -599,7 +606,7 @@ public class PetController : MonoBehaviour
     {
         var root = new GameObject(label + "Action", typeof(RectTransform));
         root.transform.SetParent(parent, false);
-        Anchor(root.GetComponent<RectTransform>(), 0.5f, 0f, 0.5f, 0f, pos, new Vector2(360, 430));
+        Anchor(root.GetComponent<RectTransform>(), 0.5f, 0f, 0.5f, 0f, pos, new Vector2(220, 280));
 
         var btnGo = new GameObject("Button", typeof(RectTransform), typeof(Image), typeof(Button));
         btnGo.transform.SetParent(root.transform, false);
@@ -614,7 +621,7 @@ public class PetController : MonoBehaviour
             img.color = Color.white;
         }
         var rt = btnGo.GetComponent<RectTransform>();
-        Anchor(rt, 0.5f, 1f, 0.5f, 1f, new Vector2(0, -165), new Vector2(330, 330));
+        Anchor(rt, 0.5f, 1f, 0.5f, 1f, new Vector2(0, -98), new Vector2(190, 190));
 
         var gloss = new GameObject("Gloss", typeof(RectTransform), typeof(Image));
         gloss.transform.SetParent(btnGo.transform, false);
