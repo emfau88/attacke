@@ -116,6 +116,7 @@ public class PetController : MonoBehaviour
     private void UseAction(int dh, int dm, int de, string label, Color color)
     {
         if (onCooldown || inFailState) return;
+        AudioManager.Instance?.PlayUiClick();
         ApplyDelta(dh, dm, de, label);
         StartCoroutine(PulseButton(label));
         FloatingText.Spawn(uiRoot, hungerText.font, label, new Vector2(0, -120), color);
