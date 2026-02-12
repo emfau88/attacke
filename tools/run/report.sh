@@ -37,7 +37,7 @@ MD_PATH="${OUT_DIR}/run_${RUN_ID}.md"
 {
   echo "# Run Report ${RUN_ID}"
   echo
-  echo "Generated: $(date -u +%Y-%m-%d %H:%M:%S UTC)"
+  echo "Generated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
   echo
   echo "| Ticket | Status | Checkpoint | Commit | Gate | Error |"
   echo "|---|---|---|---|---|---|"
