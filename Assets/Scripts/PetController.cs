@@ -458,15 +458,16 @@ public class PetController : MonoBehaviour
         Stretch(saveText.rectTransform);
         saveBadgeBg.gameObject.SetActive(false);
 
-        feedBtn = CreateActionButton(root.transform, font, "Feed", "🍖", "Art/ui/buttons/btn_food", new Color(0.31f, 0.84f, 0.49f), new Vector2(-420, -560), Feed);
-        playBtn = CreateActionButton(root.transform, font, "Play", "🔴", "Art/ui/buttons/btn_ball", new Color(1f, 0.66f, 0.23f), new Vector2(-140, -560), Play);
-        sleepBtn = CreateActionButton(root.transform, font, "Sleep", "🌙", "Art/ui/buttons/btn_sleep", new Color(0.39f, 0.56f, 1f), new Vector2(140, -560), Sleep);
+        // Visible 2-row action grid (only newest imported action assets)
+        feedBtn = CreateActionButton(root.transform, font, "Feed", "🍖", "Art/ui/buttons/btn_food", new Color(0.31f, 0.84f, 0.49f), new Vector2(-390, 520), Feed);
+        playBtn = CreateActionButton(root.transform, font, "Play", "🔴", "Art/ui/buttons/btn_ball", new Color(1f, 0.66f, 0.23f), new Vector2(-130, 520), Play);
+        sleepBtn = CreateActionButton(root.transform, font, "Sleep", "🌙", "Art/ui/buttons/btn_sleep", new Color(0.39f, 0.56f, 1f), new Vector2(130, 520), Sleep);
+        CreateActionButton(root.transform, font, "Treat", "🦴", "Art/ui/buttons/btn_bone", new Color(0.94f, 0.42f, 0.24f), new Vector2(390, 520), AuxAction);
 
-        CreateActionButton(root.transform, font, "Treat", "🦴", "Art/ui/buttons/btn_bone", new Color(0.94f, 0.42f, 0.24f), new Vector2(390, -560), AuxAction);
-        CreateActionButton(root.transform, font, "Rope", "🪢", "Art/ui/buttons/btn_rope", new Color(0.95f, 0.7f, 0.2f), new Vector2(-390, -810), AuxAction);
-        CreateActionButton(root.transform, font, "Duck", "🦆", "Art/ui/buttons/btn_duck", new Color(0.35f, 0.65f, 1f), new Vector2(-130, -810), AuxAction);
-        CreateActionButton(root.transform, font, "Medkit", "➕", "Art/ui/buttons/btn_medkit", new Color(0.4f, 0.65f, 1f), new Vector2(130, -810), AuxAction);
-        CreateActionButton(root.transform, font, "Vitamins", "🧴", "Art/ui/buttons/btn_medicine", new Color(0.4f, 0.85f, 0.45f), new Vector2(390, -810), AuxAction);
+        CreateActionButton(root.transform, font, "Rope", "🪢", "Art/ui/buttons/btn_rope", new Color(0.95f, 0.7f, 0.2f), new Vector2(-390, 220), AuxAction);
+        CreateActionButton(root.transform, font, "Duck", "🦆", "Art/ui/buttons/btn_duck", new Color(0.35f, 0.65f, 1f), new Vector2(-130, 220), AuxAction);
+        CreateActionButton(root.transform, font, "Medkit", "➕", "Art/ui/buttons/btn_medkit", new Color(0.4f, 0.65f, 1f), new Vector2(130, 220), AuxAction);
+        CreateActionButton(root.transform, font, "Vitamins", "🧴", "Art/ui/buttons/btn_medicine", new Color(0.4f, 0.85f, 0.45f), new Vector2(390, 220), AuxAction);
 
         cooldownText = CreateText(root.transform, font, "", 30, TextAnchor.MiddleCenter, new Color(0.95f, 0.95f, 1f));
         Anchor(cooldownText.rectTransform, 0.5f, 0f, 0.5f, 0f, new Vector2(0, 170), new Vector2(740, 50));
