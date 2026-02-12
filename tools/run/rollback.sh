@@ -7,4 +7,4 @@ if [[ -z "$CHECKPOINT" ]]; then
 fi
 
 git reset --hard "$CHECKPOINT"
-git clean -fd
+git clean -fd -e reports/ -e reports/*

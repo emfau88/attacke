@@ -22,6 +22,7 @@ fi
 
 git pull --rebase origin main
 
+mkdir -p "$REPORT_DIR"
 RUN_ID="$(date -u +%Y%m%dT%H%M%SZ)"
 LOG_TSV="${REPORT_DIR}/run_${RUN_ID}.tsv"
 : > "$LOG_TSV"
