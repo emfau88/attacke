@@ -1,7 +1,6 @@
 using System;
-using System.Linq;
+using System.IO;
 using UnityEditor;
-using UnityEditor.Compilation;
 using UnityEngine;
 
 namespace CI
@@ -16,28 +15,17 @@ namespace CI
             {
                 AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
 
-                int errors = 0;
-                var assemblies = CompilationPipeline.GetAssemblies();
-                foreach (var assembly in assemblies)
+                var logPath = Application.consoleLogPath;
+                if (!string.IsNullOrWhiteSpace(logPath) && File.Exists(logPath))
                 {
-                    var msgs = assembly.compilerMessages;
-                    if (msgs == null) continue;
-
-                    foreach (var msg in msgs)
+                    var log = File.ReadAllText(logPath);
+                    if (log.IndexOf("error CS", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        log.IndexOf("Compilation failed", StringComparison.OrdinalIgnoreCase) >= 0)
                     {
-                        if (msg.type == CompilerMessageType.Error)
-                        {
-                            errors++;
-                            Debug.LogError($"[CI.CompileGate] {assembly.name}: {msg.message} ({msg.file}:{msg.line})");
-                        }
+                        Debug.LogError("[CI.CompileGate] FAIL: compile markers found in log");
+                        EditorApplication.Exit(20);
+                        return;
                     }
-                }
-
-                if (errors > 0)
-                {
-                    Debug.LogError($"[CI.CompileGate] FAIL: {errors} compile error(s)");
-                    EditorApplication.Exit(20);
-                    return;
                 }
 
                 Debug.Log("[CI.CompileGate] END OK");
