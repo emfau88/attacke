@@ -501,7 +501,9 @@ public class PetController : MonoBehaviour
 
     private void TryApplyCharacterSprite()
     {
-        var tex = Resources.Load<Texture2D>("Art/user_bulldog");
+        var tex = Resources.Load<Texture2D>("Art/user_bulldog_trim");
+        if (tex == null)
+            tex = Resources.Load<Texture2D>("Art/user_bulldog");
         if (tex == null)
             tex = Resources.Load<Texture2D>("Art/bulldog_character");
         if (tex == null || dogImage == null) return;
