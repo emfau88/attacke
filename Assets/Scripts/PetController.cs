@@ -29,6 +29,7 @@ public class PetController : MonoBehaviour
     private Image dogEyeRight;
     private RectTransform dogRoot;
     private Image saveBadgeBg;
+    private bool usesCharacterSprite;
     private Text dogStateText;
     private Text hungerText;
     private Text moodText;
@@ -210,6 +211,19 @@ public class PetController : MonoBehaviour
     private void UpdateDogVisualState(DogMoodState stateName)
     {
         if (dogImage == null) return;
+
+        if (usesCharacterSprite)
+        {
+            switch (stateName)
+            {
+                case DogMoodState.Happy: dogImage.color = new Color(1f, 1f, 1f, 1f); break;
+                case DogMoodState.Tired: dogImage.color = new Color(0.82f, 0.88f, 1f, 1f); break;
+                case DogMoodState.Hungry: dogImage.color = new Color(1f, 0.93f, 0.88f, 1f); break;
+                case DogMoodState.Sick: dogImage.color = new Color(0.72f, 0.72f, 0.72f, 1f); break;
+                default: dogImage.color = new Color(1f, 1f, 1f, 1f); break;
+            }
+            return;
+        }
 
         var baseColor = new Color(0.85f, 0.75f, 0.6f);
         var muzzleColor = new Color(0.95f, 0.89f, 0.8f);
@@ -428,6 +442,8 @@ public class PetController : MonoBehaviour
         dogMouth.color = new Color(0.52f, 0.24f, 0.24f);
         Anchor(mouth.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -52), new Vector2(74, 18));
 
+        TryApplyCharacterSprite();
+
         dogStateText = CreateText(root.transform, font, "State: Idle", 34, TextAnchor.MiddleCenter, Color.white);
         Anchor(dogStateText.rectTransform, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -330), new Vector2(860, 56));
 
@@ -456,6 +472,29 @@ public class PetController : MonoBehaviour
 #if UNITY_EDITOR
         debugResetBtn = CreateActionButton(root.transform, font, "Reset", "⚙", new Color(0.35f, 0.35f, 0.35f), new Vector2(0, -900), DevReset);
 #endif
+    }
+
+    private void TryApplyCharacterSprite()
+    {
+        var tex = Resources.Load<Texture2D>("Art/bulldog_character");
+        if (tex == null || dogImage == null) return;
+
+        var sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+        dogImage.sprite = sprite;
+        dogImage.type = Image.Type.Simple;
+        dogImage.preserveAspect = true;
+        dogImage.color = Color.white;
+        usesCharacterSprite = true;
+
+        if (dogEarLeft != null) dogEarLeft.gameObject.SetActive(false);
+        if (dogEarRight != null) dogEarRight.gameObject.SetActive(false);
+        if (dogInnerEarLeft != null) dogInnerEarLeft.gameObject.SetActive(false);
+        if (dogInnerEarRight != null) dogInnerEarRight.gameObject.SetActive(false);
+        if (dogMuzzle != null) dogMuzzle.gameObject.SetActive(false);
+        if (dogEyeLeft != null) dogEyeLeft.gameObject.SetActive(false);
+        if (dogEyeRight != null) dogEyeRight.gameObject.SetActive(false);
+        if (dogNose != null) dogNose.gameObject.SetActive(false);
+        if (dogMouth != null) dogMouth.gameObject.SetActive(false);
     }
 
     private static void CreateStatusBar(Transform parent, Font font, string label, string icon, Color fillColor, out Slider slider, out Text valueText, float anchorX, float y, int seedValue)
