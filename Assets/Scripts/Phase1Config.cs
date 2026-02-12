@@ -4,7 +4,7 @@ using UnityEngine;
 public class Phase1Config : ScriptableObject
 {
     public float driftIntervalSeconds = 28f;
-    public int driftHungerDelta = 3;
+    public int driftHungerDelta = 4;
     public int driftMoodDelta = -2;
     public int driftEnergyDelta = -2;
 
