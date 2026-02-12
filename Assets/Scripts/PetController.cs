@@ -17,6 +17,7 @@ public class PetController : MonoBehaviour
     private Canvas canvas;
     private RectTransform uiRoot;
     private Image bgTint;
+    private Image backgroundImage;
     private Image dogImage;
     private Image dogEarLeft;
     private Image dogEarRight;
@@ -350,6 +351,13 @@ public class PetController : MonoBehaviour
 
         var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") ?? Resources.GetBuiltinResource<Font>("Arial.ttf");
 
+        var bg = new GameObject("Background", typeof(RectTransform), typeof(Image));
+        bg.transform.SetParent(canvas.transform, false);
+        backgroundImage = bg.GetComponent<Image>();
+        var bgRt = bg.GetComponent<RectTransform>();
+        bgRt.anchorMin = Vector2.zero; bgRt.anchorMax = Vector2.one; bgRt.offsetMin = Vector2.zero; bgRt.offsetMax = Vector2.zero;
+        TryApplyBackgroundSprite();
+
         var overlay = new GameObject("WarnOverlay", typeof(RectTransform), typeof(Image));
         overlay.transform.SetParent(canvas.transform, false);
         bgTint = overlay.GetComponent<Image>();
@@ -474,9 +482,28 @@ public class PetController : MonoBehaviour
 #endif
     }
 
+    private void TryApplyBackgroundSprite()
+    {
+        if (backgroundImage == null) return;
+        var tex = Resources.Load<Texture2D>("Art/user_background");
+        if (tex == null)
+        {
+            backgroundImage.color = new Color(0.2f, 0.33f, 0.55f, 1f);
+            return;
+        }
+
+        var sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+        backgroundImage.sprite = sprite;
+        backgroundImage.type = Image.Type.Simple;
+        backgroundImage.preserveAspect = false;
+        backgroundImage.color = Color.white;
+    }
+
     private void TryApplyCharacterSprite()
     {
-        var tex = Resources.Load<Texture2D>("Art/bulldog_character");
+        var tex = Resources.Load<Texture2D>("Art/user_bulldog");
+        if (tex == null)
+            tex = Resources.Load<Texture2D>("Art/bulldog_character");
         if (tex == null || dogImage == null) return;
 
         var sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
