@@ -18,6 +18,13 @@ public class PetController : MonoBehaviour
     private RectTransform uiRoot;
     private Image bgTint;
     private Image dogImage;
+    private Image dogEarLeft;
+    private Image dogEarRight;
+    private Image dogMuzzle;
+    private Image dogEyeLeft;
+    private Image dogEyeRight;
+    private RectTransform dogRoot;
+    private Image saveBadgeBg;
     private Text dogStateText;
     private Text hungerText;
     private Text moodText;
@@ -117,8 +124,6 @@ public class PetController : MonoBehaviour
     {
         if (onCooldown || inFailState) return;
         AudioManager.Instance?.PlayUiClick();
-        AudioManager.Instance?.PlayUiClick();
-        AudioManager.Instance?.PlayUiClick();
         ApplyDelta(dh, dm, de, label);
         StartCoroutine(PulseButton(label));
         FloatingText.Spawn(uiRoot, hungerText.font, label, new Vector2(0, -120), color);
@@ -138,6 +143,7 @@ public class PetController : MonoBehaviour
         if (saveText != null)
         {
             saveText.text = "Saved ✓";
+            if (saveBadgeBg != null) saveBadgeBg.gameObject.SetActive(true);
             StopCoroutine(nameof(ClearSaveLabel));
             StartCoroutine(nameof(ClearSaveLabel));
         }
@@ -150,6 +156,7 @@ public class PetController : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         if (saveText != null) saveText.text = "";
+        if (saveBadgeBg != null) saveBadgeBg.gameObject.SetActive(false);
     }
 
     private IEnumerator PulseButton(string label)
@@ -169,17 +176,7 @@ public class PetController : MonoBehaviour
         inFailState = stateName == DogMoodState.Sick;
         if (dogStateText != null) dogStateText.text = $"State: {stateName}";
 
-        if (dogImage != null)
-        {
-            switch (stateName)
-            {
-                case DogMoodState.Happy: dogImage.color = new Color(1f, 0.9f, 0.4f); break;
-                case DogMoodState.Tired: dogImage.color = new Color(0.5f, 0.6f, 1f); break;
-                case DogMoodState.Hungry: dogImage.color = new Color(1f, 0.6f, 0.3f); break;
-                case DogMoodState.Sick: dogImage.color = new Color(0.5f, 0.5f, 0.5f); break;
-                default: dogImage.color = new Color(0.85f, 0.75f, 0.6f); break;
-            }
-        }
+        UpdateDogVisualState(stateName);
 
         if (bgTint != null)
         {
@@ -204,6 +201,58 @@ public class PetController : MonoBehaviour
             displayedEnergy = state.Energy;
         }
         RefreshBarsOnly();
+    }
+
+    private void UpdateDogVisualState(DogMoodState stateName)
+    {
+        if (dogImage == null) return;
+
+        var baseColor = new Color(0.85f, 0.75f, 0.6f);
+        var muzzleColor = new Color(0.95f, 0.89f, 0.8f);
+        var eyeColor = new Color(0.1f, 0.12f, 0.18f);
+        var yOffset = -80f;
+        var earScale = 1f;
+
+        switch (stateName)
+        {
+            case DogMoodState.Happy:
+                baseColor = new Color(0.95f, 0.75f, 0.42f);
+                muzzleColor = new Color(1f, 0.93f, 0.82f);
+                eyeColor = new Color(0.07f, 0.08f, 0.14f);
+                yOffset = -70f;
+                earScale = 1.05f;
+                break;
+            case DogMoodState.Tired:
+                baseColor = new Color(0.65f, 0.66f, 0.86f);
+                muzzleColor = new Color(0.86f, 0.88f, 0.95f);
+                eyeColor = new Color(0.2f, 0.22f, 0.34f);
+                yOffset = -95f;
+                earScale = 0.92f;
+                break;
+            case DogMoodState.Hungry:
+                baseColor = new Color(0.98f, 0.62f, 0.35f);
+                muzzleColor = new Color(0.95f, 0.86f, 0.75f);
+                eyeColor = new Color(0.15f, 0.1f, 0.08f);
+                yOffset = -88f;
+                earScale = 0.95f;
+                break;
+            case DogMoodState.Sick:
+                baseColor = new Color(0.54f, 0.56f, 0.58f);
+                muzzleColor = new Color(0.76f, 0.77f, 0.78f);
+                eyeColor = new Color(0.2f, 0.2f, 0.2f);
+                yOffset = -102f;
+                earScale = 0.86f;
+                break;
+        }
+
+        dogImage.color = baseColor;
+        if (dogMuzzle != null) dogMuzzle.color = muzzleColor;
+        if (dogEyeLeft != null) dogEyeLeft.color = eyeColor;
+        if (dogEyeRight != null) dogEyeRight.color = eyeColor;
+
+        if (dogRoot != null) dogRoot.anchoredPosition = new Vector2(0f, yOffset);
+        if (dogEarLeft != null) dogEarLeft.rectTransform.localScale = Vector3.one * earScale;
+        if (dogEarRight != null) dogEarRight.rectTransform.localScale = Vector3.one * earScale;
     }
 
     private void RefreshBarsOnly()
@@ -291,18 +340,59 @@ public class PetController : MonoBehaviour
         questText = CreateText(questPanel.transform, font, "Quest", 36, TextAnchor.MiddleCenter, Color.white);
         Anchor(questText.rectTransform, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, 0), new Vector2(780, 110));
 
-        var dog = new GameObject("Dog", typeof(RectTransform), typeof(Image));
-        dog.transform.SetParent(root.transform, false);
-        var dr = dog.GetComponent<RectTransform>();
-        Anchor(dr, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -80), new Vector2(440, 440));
+        var dogContainer = new GameObject("DogContainer", typeof(RectTransform));
+        dogContainer.transform.SetParent(root.transform, false);
+        dogRoot = dogContainer.GetComponent<RectTransform>();
+        Anchor(dogRoot, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -80), new Vector2(520, 520));
+
+        var earL = new GameObject("DogEarLeft", typeof(RectTransform), typeof(Image));
+        earL.transform.SetParent(dogContainer.transform, false);
+        dogEarLeft = earL.GetComponent<Image>();
+        dogEarLeft.color = new Color(0.72f, 0.48f, 0.31f);
+        Anchor(earL.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(-120, 120), new Vector2(92, 150));
+
+        var earR = new GameObject("DogEarRight", typeof(RectTransform), typeof(Image));
+        earR.transform.SetParent(dogContainer.transform, false);
+        dogEarRight = earR.GetComponent<Image>();
+        dogEarRight.color = new Color(0.72f, 0.48f, 0.31f);
+        Anchor(earR.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(120, 120), new Vector2(92, 150));
+
+        var dog = new GameObject("DogBody", typeof(RectTransform), typeof(Image));
+        dog.transform.SetParent(dogContainer.transform, false);
         dogImage = dog.GetComponent<Image>();
         dogImage.color = new Color(0.85f, 0.75f, 0.6f);
+        Anchor(dog.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, Vector2.zero, new Vector2(360, 360));
+
+        var muzzle = new GameObject("DogMuzzle", typeof(RectTransform), typeof(Image));
+        muzzle.transform.SetParent(dogContainer.transform, false);
+        dogMuzzle = muzzle.GetComponent<Image>();
+        dogMuzzle.color = new Color(0.95f, 0.89f, 0.8f);
+        Anchor(muzzle.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -30), new Vector2(200, 130));
+
+        var eyeL = new GameObject("DogEyeLeft", typeof(RectTransform), typeof(Image));
+        eyeL.transform.SetParent(dogContainer.transform, false);
+        dogEyeLeft = eyeL.GetComponent<Image>();
+        dogEyeLeft.color = new Color(0.1f, 0.12f, 0.18f);
+        Anchor(eyeL.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(-62, 34), new Vector2(34, 34));
+
+        var eyeR = new GameObject("DogEyeRight", typeof(RectTransform), typeof(Image));
+        eyeR.transform.SetParent(dogContainer.transform, false);
+        dogEyeRight = eyeR.GetComponent<Image>();
+        dogEyeRight.color = new Color(0.1f, 0.12f, 0.18f);
+        Anchor(eyeR.GetComponent<RectTransform>(), 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(62, 34), new Vector2(34, 34));
 
         dogStateText = CreateText(root.transform, font, "State: Idle", 34, TextAnchor.MiddleCenter, Color.white);
         Anchor(dogStateText.rectTransform, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -330), new Vector2(860, 56));
 
-        saveText = CreateText(root.transform, font, "", 34, TextAnchor.MiddleCenter, new Color(0.9f, 1f, 0.95f));
-        Anchor(saveText.rectTransform, 0.79f, 0.28f, 0.79f, 0.28f, Vector2.zero, new Vector2(260, 70));
+        var saveBadge = new GameObject("SaveBadge", typeof(RectTransform), typeof(Image));
+        saveBadge.transform.SetParent(root.transform, false);
+        saveBadgeBg = saveBadge.GetComponent<Image>();
+        saveBadgeBg.color = new Color(0.12f, 0.2f, 0.28f, 0.92f);
+        Anchor(saveBadge.GetComponent<RectTransform>(), 0.8f, 0.28f, 0.8f, 0.28f, Vector2.zero, new Vector2(280, 86));
+
+        saveText = CreateText(saveBadge.transform, font, "", 34, TextAnchor.MiddleCenter, new Color(0.9f, 1f, 0.95f));
+        Stretch(saveText.rectTransform);
+        saveBadgeBg.gameObject.SetActive(false);
 
         feedBtn = CreateActionButton(root.transform, font, "Feed", "🍖", new Color(0.31f, 0.84f, 0.49f), new Vector2(-300, -760), Feed);
         playBtn = CreateActionButton(root.transform, font, "Play", "🔴", new Color(1f, 0.66f, 0.23f), new Vector2(0, -760), Play);
