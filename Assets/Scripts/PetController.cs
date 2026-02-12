@@ -376,26 +376,11 @@ public class PetController : MonoBehaviour
         CreateStatusBar(root.transform, font, "Mood", "♥", "Art/ui/bar_mood_empty", new Color(0.3f, 0.76f, 1f), out moodBar, out moodText, 0.5f, -300f, 75);
         CreateStatusBar(root.transform, font, "Energy", "⚡", "Art/ui/bar_energy_empty", new Color(0.45f, 0.88f, 0.38f), out energyBar, out energyText, 0.5f, -430f, 73);
 
-        var questPanel = new GameObject("QuestPanel", typeof(RectTransform), typeof(Image));
-        questPanel.transform.SetParent(root.transform, false);
-        var qp = questPanel.GetComponent<Image>();
-        qp.color = new Color(0.22f, 0.24f, 0.38f, 0.95f);
-        var questSprite = LoadSprite("Art/ui/panel_quest");
-        if (questSprite != null)
-        {
-            qp.sprite = questSprite;
-            qp.type = Image.Type.Sliced;
-            qp.color = Color.white;
-        }
-        Anchor(questPanel.GetComponent<RectTransform>(), 0.5f, 1f, 0.5f, 1f, new Vector2(0, -585), new Vector2(860, 180));
-
-        questText = CreateText(questPanel.transform, font, "Quest", 36, TextAnchor.MiddleCenter, Color.white);
-        Anchor(questText.rectTransform, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, 0), new Vector2(780, 110));
-
+        questText = null;
         var dogContainer = new GameObject("DogContainer", typeof(RectTransform));
         dogContainer.transform.SetParent(root.transform, false);
         dogRoot = dogContainer.GetComponent<RectTransform>();
-        Anchor(dogRoot, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -30), new Vector2(740, 740));
+        Anchor(dogRoot, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -260), new Vector2(1440, 1440));
 
         var earL = new GameObject("DogEarLeft", typeof(RectTransform), typeof(Image));
         earL.transform.SetParent(dogContainer.transform, false);
@@ -460,7 +445,7 @@ public class PetController : MonoBehaviour
         TryApplyCharacterSprite();
 
         dogStateText = CreateText(root.transform, font, "State: Idle", 34, TextAnchor.MiddleCenter, Color.white);
-        Anchor(dogStateText.rectTransform, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -470), new Vector2(860, 56));
+        Anchor(dogStateText.rectTransform, 0.5f, 0.5f, 0.5f, 0.5f, new Vector2(0, -700), new Vector2(860, 56));
 
         var saveBadge = new GameObject("SaveBadge", typeof(RectTransform), typeof(Image));
         saveBadge.transform.SetParent(root.transform, false);
@@ -472,9 +457,9 @@ public class PetController : MonoBehaviour
         Stretch(saveText.rectTransform);
         saveBadgeBg.gameObject.SetActive(false);
 
-        feedBtn = CreateActionButton(root.transform, font, "Feed", "🍖", "Art/ui/btn_feed", new Color(0.31f, 0.84f, 0.49f), new Vector2(-300, -780), Feed);
-        playBtn = CreateActionButton(root.transform, font, "Play", "🔴", "Art/ui/btn_play", new Color(1f, 0.66f, 0.23f), new Vector2(0, -780), Play);
-        sleepBtn = CreateActionButton(root.transform, font, "Sleep", "🌙", "Art/ui/btn_sleep", new Color(0.39f, 0.56f, 1f), new Vector2(300, -780), Sleep);
+        feedBtn = CreateActionButton(root.transform, font, "Feed", "🍖", "Art/ui/btn_feed", new Color(0.31f, 0.84f, 0.49f), new Vector2(-300, -620), Feed);
+        playBtn = CreateActionButton(root.transform, font, "Play", "🔴", "Art/ui/btn_play", new Color(1f, 0.66f, 0.23f), new Vector2(0, -620), Play);
+        sleepBtn = CreateActionButton(root.transform, font, "Sleep", "🌙", "Art/ui/btn_sleep", new Color(0.39f, 0.56f, 1f), new Vector2(300, -620), Sleep);
 
         cooldownText = CreateText(root.transform, font, "", 30, TextAnchor.MiddleCenter, new Color(0.95f, 0.95f, 1f));
         Anchor(cooldownText.rectTransform, 0.5f, 0f, 0.5f, 0f, new Vector2(0, 170), new Vector2(740, 50));
@@ -612,7 +597,7 @@ public class PetController : MonoBehaviour
     {
         var root = new GameObject(label + "Action", typeof(RectTransform));
         root.transform.SetParent(parent, false);
-        Anchor(root.GetComponent<RectTransform>(), 0.5f, 0f, 0.5f, 0f, pos, new Vector2(300, 390));
+        Anchor(root.GetComponent<RectTransform>(), 0.5f, 0f, 0.5f, 0f, pos, new Vector2(360, 430));
 
         var btnGo = new GameObject("Button", typeof(RectTransform), typeof(Image), typeof(Button));
         btnGo.transform.SetParent(root.transform, false);
@@ -627,7 +612,7 @@ public class PetController : MonoBehaviour
             img.color = Color.white;
         }
         var rt = btnGo.GetComponent<RectTransform>();
-        Anchor(rt, 0.5f, 1f, 0.5f, 1f, new Vector2(0, -145), new Vector2(280, 280));
+        Anchor(rt, 0.5f, 1f, 0.5f, 1f, new Vector2(0, -165), new Vector2(330, 330));
 
         var gloss = new GameObject("Gloss", typeof(RectTransform), typeof(Image));
         gloss.transform.SetParent(btnGo.transform, false);
