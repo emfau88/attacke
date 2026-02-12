@@ -167,6 +167,16 @@ STATE
   if [[ -n "$(git status --porcelain)" ]]; then
     git add -A -- . ':(exclude)reports/**' ':(exclude)tools/run/state.json'
     if [[ -n "$(git diff --cached --name-only)" ]]; then
+      PHASE="ci_pre_commit"
+      if ! bash "${PROJECT_ROOT}/tools/ci/ci_run.sh" >"${REPORT_DIR}/${ticket}_ci.log" 2>&1; then
+        PHASE="rollback"
+        "$ROLLBACK_SCRIPT" "$checkpoint"
+        reverts=$((reverts+1))
+        echo -e "${ticket}\tfailed\t${checkpoint}\t-\t1\tfailed\tci_gate_failed\tci_run_failed\tyes" >> "$LOG_TSV"
+        continue
+      fi
+
+      PHASE="commit"
       git commit -m "run(${ticket}): apply ticket"
       git push origin main
       commit_hash="$(git rev-parse --short HEAD)"
