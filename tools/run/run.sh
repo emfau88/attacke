@@ -200,7 +200,14 @@ STATE
   fi
 
   if [[ "$ticket" > "T240" && "$ticket" < "T261" ]]; then
-    if ! git diff --name-only | grep -q '^Assets/'; then
+    assets_changed=0
+    if git diff --name-only | grep -q '^Assets/'; then
+      assets_changed=1
+    fi
+    if git ls-files --others --exclude-standard Assets | grep -q '.'; then
+      assets_changed=1
+    fi
+    if [[ "$assets_changed" -eq 0 ]]; then
       set_phase "report"
       "$ROLLBACK_SCRIPT" "$checkpoint"
       reverts=$((reverts+1))
