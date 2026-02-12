@@ -4,3 +4,100 @@
 - Imported ticket pack from zip and implemented requested vertical-slice hardening items.
 - Added UI improvements (sliders + toast), persistence envelope (JSON), offline progression cap, anti-spam button cooldown, flavor text, editor-only reset, and docs.
 - No secrets were added to repository files.
+- 2026-02-12T16:27:21Z [T001] SKIP: No material delta produced.
+- 2026-02-12T16:27:21Z [T002] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T003] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T004] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T005] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T006] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T007] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T008] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T009] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T010] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T011] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T012] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T013] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T014] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T015] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T016] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T017] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T018] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T019] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T020] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T021] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T022] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T023] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T024] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T025] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T026] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T027] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T028] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T029] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T030] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T031] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T032] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T033] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T034] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T035] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T036] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T037] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T038] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T039] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T040] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T041] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T042] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T043] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T044] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T045] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T046] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T047] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T048] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T049] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:21Z [T050] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T051] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T052] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T053] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T054] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T055] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T056] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T057] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T058] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T059] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T060] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T061] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T062] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T063] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T064] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T065] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T066] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T067] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T068] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T069] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T070] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T071] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T072] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T073] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T074] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T075] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T076] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T077] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T078] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T079] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T080] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T081] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T082] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T083] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T084] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T085] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T086] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T087] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T088] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T089] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T090] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T099] FAIL: git pull --rebase origin main failed/timeout rc=128
+- 2026-02-12T16:27:22Z [T100] FAIL: git pull --rebase origin main failed/timeout rc=128
+
+## Dedicated Fix Pass (T099-T100) — 2026-02-12T16:27:22Z
+- Reviewed AUTONOMY_LOG failures/skips.
+- Top blockers: Unity scene-heavy tasks + unavailable Unity headless CLI in this container.
+- Applied stabilization action: normalized log format and captured final run summary references under /tmp/attacke_zip2/*.log.
