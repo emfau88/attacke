@@ -120,9 +120,10 @@ public class PetController : MonoBehaviour
         if (state.LastSavedUnix <= 0) return;
 
         long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        long elapsedSeconds = Mathf.Max(0, (int)(now - state.LastSavedUnix));
-        long cappedSeconds = Mathf.Min(elapsedSeconds, maxOfflineHours * 3600L);
-        int steps = Mathf.FloorToInt(cappedSeconds / Mathf.Max(1f, driftIntervalSeconds));
+        long elapsedSeconds = Math.Max(0L, now - state.LastSavedUnix);
+        long maxOfflineSeconds = (long)(maxOfflineHours * 3600f);
+        long cappedSeconds = Math.Min(elapsedSeconds, maxOfflineSeconds);
+        int steps = (int)(cappedSeconds / (long)Mathf.Max(1f, driftIntervalSeconds));
 
         if (steps <= 0) return;
 
