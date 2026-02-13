@@ -458,16 +458,19 @@ public class PetController : MonoBehaviour
         Stretch(saveText.rectTransform);
         saveBadgeBg.gameObject.SetActive(false);
 
-        // Visible 2-row action grid (only newest imported action assets)
-        feedBtn = CreateActionButton(root.transform, font, "Feed", "🍖", "Art/ui/buttons/btn_food", new Color(0.31f, 0.84f, 0.49f), new Vector2(-390, 520), Feed);
-        playBtn = CreateActionButton(root.transform, font, "Play", "🔴", "Art/ui/buttons/btn_ball", new Color(1f, 0.66f, 0.23f), new Vector2(-130, 520), Play);
-        sleepBtn = CreateActionButton(root.transform, font, "Sleep", "🌙", "Art/ui/buttons/btn_sleep", new Color(0.39f, 0.56f, 1f), new Vector2(130, 520), Sleep);
-        CreateActionButton(root.transform, font, "Treat", "🦴", "Art/ui/buttons/btn_bone", new Color(0.94f, 0.42f, 0.24f), new Vector2(390, 520), AuxAction);
+        var actionsOverlay = new GameObject("ActionsOverlay", typeof(RectTransform), typeof(Image));
+        actionsOverlay.transform.SetParent(root.transform, false);
+        var actionsOverlayImg = actionsOverlay.GetComponent<Image>();
+        var overlaySprite = LoadSprite("Art/ui/newset/actions_overlay_new");
+        actionsOverlayImg.sprite = overlaySprite;
+        actionsOverlayImg.type = Image.Type.Simple;
+        actionsOverlayImg.preserveAspect = true;
+        actionsOverlayImg.color = overlaySprite != null ? Color.white : new Color(0.15f, 0.15f, 0.2f, 0.75f);
+        Anchor(actionsOverlay.GetComponent<RectTransform>(), 0.5f, 0f, 0.5f, 0f, new Vector2(0, 360), new Vector2(1020, 360));
 
-        CreateActionButton(root.transform, font, "Rope", "🪢", "Art/ui/buttons/btn_rope", new Color(0.95f, 0.7f, 0.2f), new Vector2(-390, 220), AuxAction);
-        CreateActionButton(root.transform, font, "Duck", "🦆", "Art/ui/buttons/btn_duck", new Color(0.35f, 0.65f, 1f), new Vector2(-130, 220), AuxAction);
-        CreateActionButton(root.transform, font, "Medkit", "➕", "Art/ui/buttons/btn_medkit", new Color(0.4f, 0.65f, 1f), new Vector2(130, 220), AuxAction);
-        CreateActionButton(root.transform, font, "Vitamins", "🧴", "Art/ui/buttons/btn_medicine", new Color(0.4f, 0.85f, 0.45f), new Vector2(390, 220), AuxAction);
+        feedBtn = CreateActionButton(root.transform, font, "Feed", "🍖", "Art/ui/newset/btn_feed_new", new Color(0.31f, 0.84f, 0.49f), new Vector2(-260, 300), Feed);
+        playBtn = CreateActionButton(root.transform, font, "Play", "🔴", "Art/ui/newset/btn_play_new", new Color(1f, 0.66f, 0.23f), new Vector2(0, 300), Play);
+        sleepBtn = CreateActionButton(root.transform, font, "Sleep", "🌙", "Art/ui/newset/btn_sleep_new", new Color(0.39f, 0.56f, 1f), new Vector2(260, 300), Sleep);
 
         cooldownText = CreateText(root.transform, font, "", 30, TextAnchor.MiddleCenter, new Color(0.95f, 0.95f, 1f));
         Anchor(cooldownText.rectTransform, 0.5f, 0f, 0.5f, 0f, new Vector2(0, 170), new Vector2(740, 50));
